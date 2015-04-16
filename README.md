@@ -1,6 +1,10 @@
 Jaws -- A simple Java web server.
 ===
 
+## NEXT
+run.java
+
+
 ## description
 
 
@@ -93,6 +97,7 @@ the error log entry format could be:
 
 ## server.java tasks
 
+TODO
 get configuration from an XML file
 
 spawn worker threads

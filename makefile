@@ -408,7 +408,7 @@ com.paraschas.ce325.web_server : $(call PACKAGE_OBJS,com.paraschas.ce325.web_ser
 
 
 open:
-	vim -p com/paraschas/ce325/web_server/server.java README.md
+	vim -p run.java com/paraschas/ce325/web_server/server.java README.md
 
 
 run: run.java

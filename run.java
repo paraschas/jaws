@@ -18,5 +18,10 @@ class run {
             System.out.println("java run <CONFIGURATION_FILE.xml>");
             System.exit(0);
         }
+
+        // NEXT
+        // TODO
+        // get settings from the configuration file
+            // parse xml file
     }
 }
