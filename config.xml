@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaws>
+    <listen port="8000"/>
+    <statistics port="8001"/>
+    <log>
+        <access filepath="logs/access.log"/>
+        <error filepath="logs/error.log"/>
+    </log>
+    <document-root filepath="."/>
+    <run-php>no</run-php>
+    <deny-access>
+        <ip>192.168.1.121</ip>
+    </deny-access>
+</jaws>
