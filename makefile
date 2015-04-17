@@ -1,5 +1,5 @@
 #
-# Makefile created at Thu Apr  9 20:22:01 2015, by mmake
+# Makefile created at Fri Apr 17 14:35:47 2015, by mmake
 #
 
 # Programs (with common options):
@@ -109,8 +109,8 @@ PACKAGES = \
 
 # All packages that can be recursively compiled.
 ALL_PACKAGES = \
-	com.paraschas \
 	com.paraschas.ce325 \
+	com.paraschas \
 	com \
 	$(PACKAGES)
 
@@ -120,7 +120,8 @@ JAVADOC_PACKAGES = $(PACKAGES)
 
 
 # Resource packages
-RESOURCES = 
+RESOURCES = \
+	html.resources
 
 
 # Directories with shell scripts
@@ -401,8 +402,8 @@ ifneq ($(DEPEND),)
 endif
 
 #package targets
-com.paraschas : $(call PACKAGE_OBJS,com.paraschas)
 com.paraschas.ce325 : $(call PACKAGE_OBJS,com.paraschas.ce325)
+com.paraschas : $(call PACKAGE_OBJS,com.paraschas)
 com : $(call PACKAGE_OBJS,com)
 com.paraschas.ce325.web_server : $(call PACKAGE_OBJS,com.paraschas.ce325.web_server)
 
