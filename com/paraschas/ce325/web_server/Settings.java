@@ -13,7 +13,6 @@ import java.util.LinkedList;
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
  * @version  0.1.0
- * @since    2015-04-17
  */
 public class Settings {
     String listenPort;
