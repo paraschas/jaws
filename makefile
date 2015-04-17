@@ -414,7 +414,7 @@ open:
 		com/paraschas/ce325/web_server/ParseConfigurationFile.java \
 		com/paraschas/ce325/web_server/Settings.java \
 		config.xml \
-		com/paraschas/ce325/web_server/server.java \
+		com/paraschas/ce325/web_server/Server.java \
 		README.md \
 		makefile
 

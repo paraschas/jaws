@@ -11,4 +11,6 @@ package com.paraschas.ce325.web_server;
  * @version  0.0.1
  */
 public class ParseConfigurationFile {
+    public ParseConfigurationFile(String configurationFilePath) {
+    }
 }

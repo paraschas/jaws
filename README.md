@@ -105,7 +105,7 @@ architecture
 ## Settings.java
 
 
-## server.java
+## Server.java
 
 spawn worker threads
 
