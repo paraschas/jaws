@@ -11,5 +11,5 @@ package com.paraschas.ce325.web_server;
  * @version  0.0.1
  * @since    2015-04-17
  */
-class ParseConfigurationFile {
+public class ParseConfigurationFile {
 }
