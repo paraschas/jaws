@@ -409,10 +409,10 @@ com : $(call PACKAGE_OBJS,com)
 com.paraschas.ce325.web_server : $(call PACKAGE_OBJS,com.paraschas.ce325.web_server)
 
 
+.PHONY: open
 open:
 	vim -p \
 		Run.java \
-		com/paraschas/ce325/web_server/ParseConfigurationFile.java \
 		com/paraschas/ce325/web_server/Settings.java \
 		config.xml \
 		com/paraschas/ce325/web_server/Server.java \
@@ -420,5 +420,6 @@ open:
 		makefile
 
 
-run: Run.java
-	java Run
+.PHONY: run
+run: Run.class
+	java Run config.xml
