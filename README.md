@@ -1,12 +1,6 @@
 Jaws -- A simple Java web server.
 ===
 
-## NEXT
-run.java
-    get settings from the configuration file
-        parse xml file
-
-
 ## description
 
 
@@ -97,10 +91,21 @@ the error log entry format could be:
 <IP address> - <request datetime> - <HTTP request header> - <exception stack trace>
 
 
-## server.java tasks
+architecture
+---
 
-TODO
-get configuration from an XML file
+## Run.java
+    get configuration from an XML file
+        NEXT
+        parse xml file
+        store to a Settings object
+    start the server
+
+
+## Settings.java
+
+
+## server.java
 
 spawn worker threads
 

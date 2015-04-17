@@ -1,6 +1,9 @@
 // ParseConfigurationFile.java
 
 
+package com.paraschas.ce325.web_server;
+
+
 /**
  * Parse the configuration file and return a settings object.
  *
