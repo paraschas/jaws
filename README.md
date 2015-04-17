@@ -3,6 +3,8 @@ Jaws -- A simple Java web server.
 
 ## NEXT
 run.java
+    get settings from the configuration file
+        parse xml file
 
 
 ## description
