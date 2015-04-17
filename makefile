@@ -386,6 +386,7 @@ clean::
 	$(FIND) . \( -name '*~' -o -name '*.class' \) -print | \
 	$(XARGS) $(RM) 
 	$(FIND) . -name '*.u' -print | $(XARGS) $(RM)
+	rm -rf $(DOC_DIR)
 
 ifneq ($(strip $(XJAVA_SRC)),)
 clean::
