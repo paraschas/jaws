@@ -96,9 +96,11 @@ architecture
 
 ## Run.java
     get configuration from an XML file
-        NEXT
         parse xml file
-        store to a Settings object
+        store the configuration data to a Settings object
+        NEXT
+        get and check the data from the Settings object
+        clean up debug prints
     start the server
 
 
