@@ -5,7 +5,7 @@ package com.paraschas.ce325.web_server;
 
 
 import java.util.List;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
 /**
@@ -28,7 +28,7 @@ public class Settings {
      * Settings constructor.
      */
     public Settings() {
-        denyAccessIps = new LinkedList<String>();
+        denyAccessIps = new ArrayList<String>();
     }
 
 
@@ -83,7 +83,7 @@ public class Settings {
     /**
      * Add an IP address to the denyAccessIps list.
      */
-    public void addDenyAccessIps(String denyAccessIp) {
+    public void addDenyAccessIp(String denyAccessIp) {
         denyAccessIps.add(denyAccessIp);
     }
 
