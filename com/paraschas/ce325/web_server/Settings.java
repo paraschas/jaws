@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Store the settings of the server.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.1.0
+ * @version  0.2.0
  */
 public class Settings {
     String listenPort;

@@ -17,11 +17,15 @@ import com.paraschas.ce325.web_server.Settings;
  * Run Jaws. For testing and stuff.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.1
+ * @version  0.0.2
  */
 class Run {
     /**
      * Parse the configuration file and return a settings object.
+     *
+     * reference:
+     * http://docs.oracle.com/javase/7/docs/api/org/w3c/dom/Document.html
+     * http://docs.oracle.com/javase/7/docs/api/org/w3c/dom/Node.html
      */
     public static Settings parseConfigurationFile(String configurationFilePath) {
         Settings settings = new Settings();
