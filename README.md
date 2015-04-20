@@ -98,9 +98,9 @@ architecture
     get configuration from an XML file
         parse xml file
         store the configuration data to a Settings object
-        NEXT
         get and check the data from the Settings object
-        clean up debug prints
+    NEXT
+    check the server
     start the server
 
 

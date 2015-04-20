@@ -20,6 +20,21 @@ import com.paraschas.ce325.web_server.Settings;
  * @version  0.0.2
  */
 class Run {
+    public static void printSettings(Settings settings) {
+        System.out.println("listen port: " + settings.getListenPort());
+        System.out.println("statistics port: " + settings.getStatisticsPort());
+        System.out.println("access log path: " + settings.getAccessLogPath());
+        System.out.println("error log path: " + settings.getErrorLogPath());
+        System.out.println("document root path: " + settings.getDocumentRootPath());
+        System.out.println("run PHP: " + settings.getRunPhp());
+        System.out.println("deny access:");
+        List<String> denyAccessIps = settings.getDenyAccessIps();
+        for (String ip: denyAccessIps) {
+            System.out.println("\tip: " + ip);
+        }
+    }
+
+
     /**
      * Parse the configuration file and return a settings object.
      *
@@ -46,8 +61,6 @@ class Run {
                 Node node = nodeList.item(i);
 
                 String nodeName = node.getNodeName();
-                System.out.println();
-                System.out.println("name: " + nodeName);
 
                 // skip the root node
                 if (node == root) {
@@ -58,7 +71,6 @@ class Run {
                     Node listenPortAttribute =
                         node.getAttributes().getNamedItem("port");
                     settings.setListenPort(listenPortAttribute.getNodeValue());
-                    System.out.println("listen port: " + settings.getListenPort());
                     continue;
                 }
 
@@ -66,7 +78,6 @@ class Run {
                     Node statisticsPortAttribute =
                         node.getAttributes().getNamedItem("port");
                     settings.setStatisticsPort(statisticsPortAttribute.getNodeValue());
-                    System.out.println("statistics port: " + settings.getStatisticsPort());
                     continue;
                 }
 
@@ -79,7 +90,6 @@ class Run {
                     Node accessFilepathAttribute =
                         node.getAttributes().getNamedItem("filepath");
                     settings.setAccessLogPath(accessFilepathAttribute.getNodeValue());
-                    System.out.println("access log path: " + settings.getAccessLogPath());
                     continue;
                 }
 
@@ -87,7 +97,6 @@ class Run {
                     Node errorFilepathAttribute =
                         node.getAttributes().getNamedItem("filepath");
                     settings.setErrorLogPath(errorFilepathAttribute.getNodeValue());
-                    System.out.println("error log path: " + settings.getErrorLogPath());
                     continue;
                 }
 
@@ -95,13 +104,11 @@ class Run {
                     Node documentRootFilepathAttribute =
                         node.getAttributes().getNamedItem("filepath");
                     settings.setDocumentRootPath(documentRootFilepathAttribute.getNodeValue());
-                    System.out.println("document root path: " + settings.getDocumentRootPath());
                     continue;
                 }
 
                 if (nodeName.equals("run-php") && (node.getParentNode() == root)) {
                     settings.setRunPhp(node.getTextContent());
-                    System.out.println("run PHP: " + settings.getRunPhp());
                     continue;
                 }
 
@@ -113,10 +120,6 @@ class Run {
                 // add an IP to the deny access list
                 if (nodeName.equals("ip") && node.getParentNode().getNodeName().equals("deny-access")) {
                     settings.addDenyAccessIp(node.getTextContent());
-                    List<String> denyAccessIps = settings.getDenyAccessIps();
-                    for (String ip: denyAccessIps) {
-                        System.out.println("\tip: " + ip);
-                    }
                     continue;
                 }
             }
@@ -142,5 +145,8 @@ class Run {
         System.out.println("configurationFilePath: " + configurationFilePath);
 
         settings = parseConfigurationFile(configurationFilePath);
+
+        // DEBUG
+        printSettings(settings);
     }
 }
