@@ -114,3 +114,8 @@ spawn worker threads
 listen for requests
 
 place them in a job queue
+
+
+notes
+---
+search for a library that gives you the mimetype of a file
