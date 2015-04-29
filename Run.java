@@ -142,7 +142,8 @@ class Run {
         }
 
         configurationFilePath = args[0];
-        System.out.println("configurationFilePath: " + configurationFilePath);
+        // log info
+        //System.out.println("configurationFilePath: " + configurationFilePath);
 
         settings = parseConfigurationFile(configurationFilePath);
 
