@@ -421,5 +421,5 @@ open:
 
 
 .PHONY: run
-run: Run.class
+run: $(JAVA_OBJS)
 	java Run config.xml
