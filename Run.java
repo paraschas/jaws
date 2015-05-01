@@ -22,6 +22,7 @@ import com.paraschas.ce325.web_server.Settings;
  */
 class Run {
     public static void printSettings(Settings settings) {
+        System.out.println();
         System.out.println("listen port: " + settings.getListenPort());
         System.out.println("statistics port: " + settings.getStatisticsPort());
         System.out.println("access log path: " + settings.getAccessLogPath());
@@ -33,6 +34,7 @@ class Run {
         for (String ip: denyAccessIps) {
             System.out.println("\tip: " + ip);
         }
+        System.out.println();
     }
 
 
@@ -149,14 +151,14 @@ class Run {
         settings = parseConfigurationFile(configurationFilePath);
 
         // DEBUG
-        //printSettings(settings);
+        printSettings(settings);
 
         Server server = new Server(settings);
 
         // start the server
         try {
-            server.serve( settings.getListenPort() );
-        } catch (IOException e) {
+            server.interruptibleServe( settings.getListenPort() );
+        } catch (InterruptedException e) {
             System.out.println( e.getMessage() );
         }
     }

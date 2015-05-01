@@ -34,11 +34,33 @@ public class Server {
 
 
     /**
+     * TODO
+     * Interruptible serve method that gracefully shuts down the server on a shutdown signal.
+     *
+     * http://stackoverflow.com/questions/2541597/how-to-gracefully-handle-the-sigkill-signal-in-java
+     */
+    public void interruptibleServe(int portNumber) throws InterruptedException {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                System.out.println();
+                System.out.println("CTRL-D received, shutting down");
+            }
+        });
+
+        try {
+            serve(portNumber);
+        } catch (IOException e) {
+            System.out.println( e.getMessage() );
+        }
+    }
+
+
+    /**
      * Main server method.
      */
     public void serve(int portNumber) throws IOException {
-        // DEBUG
-        System.out.println("serve() listening on " + Integer.toString(portNumber));
+        System.out.println("listening on " + Integer.toString(portNumber));
 
         try (
                 ServerSocket serverSocket = new ServerSocket();
@@ -52,15 +74,14 @@ public class Server {
                     BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
                 ) {
                 // no catch here
-                System.out.println("Connected to " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort());
+                System.out.println("new client connection: " + clientSocket.getInetAddress() +
+                        ":" + clientSocket.getPort());
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     out.println(inputLine);
                     System.out.println("echoing: " + inputLine);
                 }
             } catch (IOException e) {
-                System.out.println("Exception caught when trying to listen on port "
-                        + portNumber + " or listening for a connection");
                 System.out.println( e.getMessage() );
             }
         }
