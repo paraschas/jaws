@@ -4,6 +4,7 @@
 package com.paraschas.ce325.web_server;
 
 
+import java.lang.Integer;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,14 +13,16 @@ import java.util.ArrayList;
  * Store the settings of the server.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.2.0
+ * @version  0.3.0
  */
 public class Settings {
-    String listenPort;
-    String statisticsPort;
+    int listenPort;
+    int statisticsPort;
     String accessLogPath;
     String errorLogPath;
     String documentRootPath;
+    // TODO
+    // make boolean
     String runPhp;
     List<String> denyAccessIps;
 
@@ -36,7 +39,7 @@ public class Settings {
      * Set the listening port.
      */
     public void setListenPort(String listenPort) {
-        this.listenPort = listenPort;
+        this.listenPort = Integer.parseInt(listenPort);
     }
 
 
@@ -44,7 +47,7 @@ public class Settings {
      * Set the statistics port.
      */
     public void setStatisticsPort(String statisticsPort) {
-        this.statisticsPort = statisticsPort;
+        this.statisticsPort = Integer.parseInt(statisticsPort);
     }
 
 
@@ -93,7 +96,7 @@ public class Settings {
      *
      * @return listenPort the listening port.
      */
-    public String getListenPort() {
+    public int getListenPort() {
         return listenPort;
     }
 
@@ -103,7 +106,7 @@ public class Settings {
      *
      * @return statisticsPort the statistics port.
      */
-    public String getStatisticsPort() {
+    public int getStatisticsPort() {
         return statisticsPort;
     }
 
