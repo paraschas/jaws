@@ -99,21 +99,24 @@ architecture
         parse xml file
         store the configuration data to a Settings object
         get and check the data from the Settings object
-    NEXT
-    check the server
-    start the server
+    create the server
+        TODO
+        test the server
 
 
 ## Settings.java
 
 
 ## Server.java
+    NEXT
+    listen and echo requests
 
-spawn worker threads
+    LATER
+    spawn worker threads
 
-listen for requests
+    listen for requests
 
-place them in a job queue
+    place them in a job queue
 
 
 notes

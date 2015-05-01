@@ -4,6 +4,14 @@
 package com.paraschas.ce325.web_server;
 
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.InetSocketAddress;
+
 import com.paraschas.ce325.web_server.Settings;
 
 
@@ -25,8 +33,36 @@ public class Server {
     }
 
 
-    // DEBUG
-    public void doSomething() {
-        System.out.println("hello world");
+    /**
+     * Main server method.
+     */
+    public void serve(int portNumber) throws IOException {
+        // DEBUG
+        System.out.println("serve() listening on " + Integer.toString(portNumber));
+
+        try (
+                ServerSocket serverSocket = new ServerSocket();
+            ) {
+            // TODO
+            // store the IP address in a variable
+            serverSocket.bind(new InetSocketAddress("localhost", portNumber));
+            try (
+                    Socket clientSocket = serverSocket.accept();
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
+                ) {
+                // no catch here
+                System.out.println("Connected to " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort());
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    out.println(inputLine);
+                    System.out.println("echoing: " + inputLine);
+                }
+            } catch (IOException e) {
+                System.out.println("Exception caught when trying to listen on port "
+                        + portNumber + " or listening for a connection");
+                System.out.println( e.getMessage() );
+            }
+        }
     }
 }

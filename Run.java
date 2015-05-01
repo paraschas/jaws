@@ -2,6 +2,7 @@
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +18,7 @@ import com.paraschas.ce325.web_server.Settings;
  * Run Jaws. For testing and stuff.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.2
+ * @version  0.1.0
  */
 class Run {
     public static void printSettings(Settings settings) {
@@ -152,7 +153,11 @@ class Run {
 
         Server server = new Server(settings);
 
-        // DEBUG
-        server.doSomething();
+        // start the server
+        try {
+            server.serve( settings.getListenPort() );
+        } catch (IOException e) {
+            System.out.println( e.getMessage() );
+        }
     }
 }
