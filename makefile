@@ -414,6 +414,7 @@ open:
 	vim -p \
 		Run.java \
 		com/paraschas/ce325/web_server/Server.java \
+		com/paraschas/ce325/web_server/Worker.java \
 		com/paraschas/ce325/web_server/Settings.java \
 		config.xml \
 		README.md \

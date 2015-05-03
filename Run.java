@@ -136,6 +136,7 @@ class Run {
 
     public static void main(String[] args) {
         String configurationFilePath;
+        String ipAddress = "localhost";
         Settings settings = new Settings();
 
         if (args.length == 0) {
@@ -157,7 +158,7 @@ class Run {
 
         // start the server
         try {
-            server.interruptibleServe( settings.getListenPort() );
+            server.interruptibleServe(ipAddress, settings.getListenPort());
         } catch (InterruptedException e) {
             System.out.println( e.getMessage() );
         }
