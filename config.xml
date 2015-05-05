@@ -6,10 +6,10 @@
         <access filepath="logs/access.log"/>
         <error filepath="logs/error.log"/>
     </log>
-    <document-root filepath="."/>
-    <run-php>no</run-php>
-    <deny-access>
+    <documentroot filepath="."/>
+    <runphp>no</runphp>
+    <denyaccess>
         <ip>192.168.1.121</ip>
         <ip>192.168.1.227</ip>
-    </deny-access>
+    </denyaccess>
 </jaws>

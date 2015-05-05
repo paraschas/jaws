@@ -103,25 +103,25 @@ class Run {
                     continue;
                 }
 
-                if (nodeName.equals("document-root") && (node.getParentNode() == root)) {
+                if (nodeName.equals("documentroot") && (node.getParentNode() == root)) {
                     Node documentRootFilepathAttribute =
                         node.getAttributes().getNamedItem("filepath");
                     settings.setDocumentRootPath(documentRootFilepathAttribute.getNodeValue());
                     continue;
                 }
 
-                if (nodeName.equals("run-php") && (node.getParentNode() == root)) {
+                if (nodeName.equals("runphp") && (node.getParentNode() == root)) {
                     settings.setRunPhp(node.getTextContent());
                     continue;
                 }
 
-                // skip the deny-access element
-                if (nodeName.equals("deny-access") && (node.getParentNode() == root)) {
+                // skip the denyaccess element
+                if (nodeName.equals("denyaccess") && (node.getParentNode() == root)) {
                     continue;
                 }
 
                 // add an IP to the deny access list
-                if (nodeName.equals("ip") && node.getParentNode().getNodeName().equals("deny-access")) {
+                if (nodeName.equals("ip") && node.getParentNode().getNodeName().equals("denyaccess")) {
                     settings.addDenyAccessIp(node.getTextContent());
                     continue;
                 }

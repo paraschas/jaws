@@ -56,27 +56,27 @@ listen port: the listening port
 statistics port: the port that the server serves the statistics page
 log, access filepath: the access log file path
 log, error filepath: the error log file path
-document-root: the root directory of the server
-run-php: whether to run PHP scripts (optionally with parameters)
-deny-access, ip: IP address to deny service with optional CIDR notation
+documentroot: the root directory of the server
+runphp: whether to run PHP scripts (optionally with parameters)
+denyaccess, ip: IP address to deny service with optional CIDR notation
 
 example configuration file:
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
-<ce325-server>
+<ce325server>
     <listen port="8000" />
     <statistics port="8001" />
     <log>
         <access filepath="/path/to/access.log" />
         <error filepath="/path/to/error.log" />
     </log>
-    <document-root filepath="/path/to/document-root/" />
-    <run-php>yes</run-php>
-    <deny-access>
+    <documentroot filepath="/path/to/document-root/" />
+    <runphp>yes</runphp>
+    <denyaccess>
         <ip>52.8.64.0/24</ip>
         <ip>128.44.0.0/16</ip>
-    </deny-access>
-</ce325-server>
+    </denyaccess>
+</ce325server>
 ```
 
 
