@@ -114,26 +114,21 @@ architecture
         parse xml file
         store the configuration data to a Settings object
         get and check the data from the Settings object
-    create the server
-        TODO
-        test the server
+    create and run the server
 
 
 ## Settings.java
 
 
 ## Server.java
-    NEXT
-    listen and echo requests
-
-    LATER
-    spawn worker threads
-
     listen for requests
 
-    place them in a job queue
+    spawn a worker thread on request
 
 
-notes
----
-search for a library that gives you the mimetype of a file
+## Worker.java
+    parse requests
+
+    NEXT
+    serve files with correct mimetype (especially *.html/*.htm ones)
+        search for a library that gives you the mimetype of a file
