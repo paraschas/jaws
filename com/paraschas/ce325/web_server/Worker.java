@@ -47,8 +47,21 @@ public class Worker extends Thread {
 
         if (statusCode == 200) {
             status = "HTTP/1.1 200 OK" + "\r\n";
-        } else {
+        } else if (statusCode == 400) {
+            status = "HTTP/1.1 400 Bad Request" + "\r\n";
+        } else if (statusCode == 404) {
             status = "HTTP/1.1 404 Not Found" + "\r\n";
+        // TODO
+        // "The response MUST include an Allow header containing a list of valid methods for the requested resource."
+        } else if (statusCode == 405) {
+            status = "HTTP/1.1 405 Method Not Allowed" + "\r\n";
+        } else if (statusCode == 500) {
+            status = "HTTP/1.1 500 Internal Server Error" + "\r\n";
+        } else {
+            // TODO
+            // how do we deal with errors?
+            System.out.println("error, status code not supported");
+            status = "no status" + "\r\n";
         }
 
         if (isFile) {

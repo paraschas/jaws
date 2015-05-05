@@ -41,12 +41,27 @@ no supported headers for the request for HTTP 1.0 and only the Host header for H
 
 headers send by the server: Date, Server, Last-Modified, Connection, Content-Length, Content-Type
 
-supported HTTP status codes:
-200 OK: succesful reply
-400 Bad Request: the server can't understand the request
-404 Not Found: the client requests a non existing resource
-405 Method Not Allowed: the request method isn't GET
-500 Internal Server Error: an exception in the server
+
+supported HTTP status codes
+---
+200 OK
+The request has succeeded.
+
+400 Bad Request
+The request could not be understood by the server due to malformed syntax.
+
+404 Not Found
+The server has not found anything matching the Request-URI.
+
+405 Method Not Allowed
+The method specified in the Request-Line is not allowed for the resource identified by the Request-URI.
+TODO
+The response MUST include an Allow header containing a list of valid methods for the requested resource.
+
+500 Internal Server Error
+The server encountered an unexpected condition which prevented it from fulfilling the request.
+
+[status code definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 
 
 ## XML configuration file
