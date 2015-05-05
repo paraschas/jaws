@@ -64,7 +64,9 @@ public class Worker extends Thread {
             status = "no status" + "\r\n";
         }
 
-        if (isFile) {
+        // TODO
+        // this should change completely
+        if ( isFile ) {
             fileName = responseString;
             fin = new FileInputStream(fileName);
             contentLength = "Content-Length: " + Integer.toString(fin.available()) + "\r\n";
@@ -107,42 +109,50 @@ public class Worker extends Thread {
             input = new BufferedReader(new InputStreamReader( clientSocket.getInputStream() ));
             output = new DataOutputStream( clientSocket.getOutputStream() );
 
-            String requestString = input.readLine();
-            String headerLine = requestString;
+            StringBuffer response = new StringBuffer();
+            response.append("request<br>");
+            response.append("-------<br>");
 
-            StringTokenizer tokenizer = new StringTokenizer(headerLine);
+            // DEBUG
+            System.out.println("request");
+            System.out.println("-------");
+
+            String inputLine;
+            inputLine = input.readLine();
+
+            StringTokenizer tokenizer = new StringTokenizer(inputLine);
             String httpMethod = tokenizer.nextToken();
-            String httpQueryString = tokenizer.nextToken();
+            String queryString = tokenizer.nextToken();
 
-            StringBuffer responseBuffer = new StringBuffer();
-            responseBuffer.append("request:<br>");
-
-            System.out.println("request:");
             while ( input.ready() ) {
-                // Read the HTTP complete HTTP Query
-                responseBuffer.append(requestString + "<br>");
-                System.out.println(requestString);
-                requestString = input.readLine();
+                inputLine = input.readLine();
+
+                // DEBUG
+                System.out.println(inputLine);
+
+                response.append(inputLine + "<br>");
             }
 
             if ( httpMethod.equals("GET") ) {
-                if ( httpQueryString.equals("/") ) {
-                    // The default home page
-                    sendResponse(200, responseBuffer.toString(), false);
+                // TODO
+                // serve index.html or index.htm if at least one of them exists,
+                // serve dynamically generated html code with the contents of the directory
+                // that was requested
+                if ( queryString.equals("/") ) {
+                    // send a dummy response
+                    sendResponse(200, response.toString(), false);
                 } else {
                     // This is interpreted as a file name
-                    String fileName = httpQueryString.replaceFirst("/", "");
+                    String fileName = queryString.replaceFirst("/", "");
                     fileName = URLDecoder.decode(fileName, "UTF-8");
                     if (new File(fileName).isFile()){
                         sendResponse(200, fileName, true);
                     } else {
-                        sendResponse(404, "<b>The Requested resource not found ..." +
-                                "Usage: http://127.0.0.1:8000 or http://127.0.0.1:8000/<fileName></b>", false);
+                        sendResponse(404, "<b>Not Found</b>", false);
                     }
                 }
             } else {
-                sendResponse(404, "<b>The Requested resource not found ..." +
-                    "Usage: http://127.0.0.1:8000 or http://127.0.0.1:8000/<fileName></b>", false);
+                sendResponse(405, "<b>Method Not Allowed</b>", false);
             }
         } catch (Exception e) {
             e.printStackTrace();
