@@ -424,3 +424,15 @@ open:
 .PHONY: run
 run: $(JAVA_OBJS)
 	java Run config.xml
+
+
+.PHONY: curl_root
+curl_root:
+	clear
+	curl -I localhost:8000
+
+
+.PHONY: curl_404
+curl_404:
+	clear
+	curl -I localhost:8000/404.html

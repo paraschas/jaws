@@ -68,7 +68,7 @@ public class Server {
                 try {
                     Socket clientSocket = serverSocket.accept();
 
-                    Worker worker = new Worker(clientSocket);
+                    Worker worker = new Worker(clientSocket, settings);
                     worker.start();
                 } catch (IOException e) {
                     System.out.println( e.getMessage() );

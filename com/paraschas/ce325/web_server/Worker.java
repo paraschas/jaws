@@ -7,29 +7,35 @@ package com.paraschas.ce325.web_server;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.StringTokenizer;
+
+import com.paraschas.ce325.web_server.Settings;
 
 
 /**
  * Worker to service requests spawned as a new thread.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.2
+ * @version  0.0.3
  */
 public class Worker extends Thread {
     Socket clientSocket;
+    Settings settings;
 
 
     /**
      * Worker constructor.
      */
-    public Worker(Socket clientSocket) {
+    public Worker(Socket clientSocket, Settings settings) {
         this.clientSocket = clientSocket;
+        this.settings = settings;
     }
 
 
@@ -64,50 +70,88 @@ public class Worker extends Thread {
 
             String Status;
             String Date;
-            final String Server = "Jaws (ce325 web server)" + "\r\n";
+            final String Server = "Server: " + "Jaws (ce325 web server)" + "\r\n";
             String LastModified;
-            String Connection;
+            final String Connection = "Connection: " + "close" + "\r\n";
             String ContentLength;
             String ContentType;
 
             Status = "HTTP/1.1 ";
             LastModified = "";
-            Connection = "";
             ContentLength = "";
             ContentType = "";
 
-            Date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
+            Date = "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
             // DEBUG
 
             if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
-                // TODO
-                // serve index.html or index.htm if at least one of them exists,
-                // serve dynamically generated html code with the contents of the directory
-                // that was requested
-
-                File file = new File( URLDecoder.decode(queryString, "UTF-8") );
+                File path = new File( URLDecoder.decode(settings.getDocumentRootPath() + queryString, "UTF-8") );
                 // check if the path exists
-                if ( file.exists() ) {
+                if ( path.exists() ) {
+                    // if the path is a file, serve the file.
+
+                    if ( path.isDirectory() ) {
+                        // serve the index.html file if it exists in the directory
+                        if ( new File(path, "index.html").exists() ) {
+                            path = new File(path.toPath() + "/" + "index.html");
+                        // serve the index.htm file if it exists in the directory
+                        } else if ( new File(path, "index.htm").exists() ) {
+                            path = new File(path.toPath() + "/" + "index.htm");
+                        // serve the dynamically generated html code with the contents of
+                        // the directory that was requested
+                        } else {
+                            // TODO
+                        }
+                    }
+
+                    // set the Status Code
                     Status += "200 OK" + "\r\n";
 
-                    // if the path is a file serve the file
-                    if ( file.isFile() ) {
-                    // if the path is a directory generate and serve the dynamic html page
-                    } else if ( file.isDirectory() ) {
+                    LastModified = "Last-Modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(path.lastModified()) + "\r\n";
+
+                    // get the size of the file
+                    ContentLength = "Content-Length: " + path.length() + "\r\n";
+                    // get the mimetype of the file
+                    ContentType = "Content-Type: " +
+                            Files.probeContentType( path.toPath() ) + "\r\n";
+
+                    FileInputStream fin = new FileInputStream(path);
+
+                    String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+
+                    // DEBUG
+                    System.out.println(header);
+
+                    output.writeBytes(header);
+
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+
+                    while ((bytesRead = fin.read(buffer)) != -1 ) {
+                        output.write(buffer, 0, bytesRead);
                     }
+
+                    fin.close();
                 } else {
                     Status += "404 Not Found" + "\r\n";
-                }
 
+                    String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+
+                    // DEBUG
+                    System.out.println(header);
+
+                    output.writeBytes(header);
+                }
             } else {
                 Status += "405 Method Not Allowed" + "\r\n";
+
+                String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+
+                // DEBUG
+                System.out.println(header);
+
+                output.writeBytes(header);
             }
-
-            String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
-
-            System.out.println(header);
-
-            output.writeBytes(header);
 
             output.close();
         } catch (Exception e) {
