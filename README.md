@@ -123,7 +123,7 @@ architecture
 ## Server.java
     listen for requests
 
-    spawn a worker thread on request
+    spawn a worker thread for every incoming request
 
 
 ## Worker.java

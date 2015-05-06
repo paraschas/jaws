@@ -7,10 +7,11 @@ package com.paraschas.ce325.web_server;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.StringTokenizer;
 
 
@@ -18,12 +19,10 @@ import java.util.StringTokenizer;
  * Worker to service requests spawned as a new thread.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.1
+ * @version  0.0.2
  */
 public class Worker extends Thread {
     Socket clientSocket;
-    BufferedReader input = null;
-    DataOutputStream output = null;
 
 
     /**
@@ -35,88 +34,13 @@ public class Worker extends Thread {
 
 
     /**
-     * Send the response to a request to the client.
+     * Service a request.
      */
-    public void sendResponse(int statusCode, String responseString, boolean isFile) throws Exception {
-        String status;
-        String serverDetails = "Jaws web server" + "\r\n";
-        String contentLength = null;
-        String fileName = null;
-        String contentType = "Content-Type: text/html" + "\r\n";
-        FileInputStream fin = null;
-
-        if (statusCode == 200) {
-            status = "HTTP/1.1 200 OK" + "\r\n";
-        } else if (statusCode == 400) {
-            status = "HTTP/1.1 400 Bad Request" + "\r\n";
-        } else if (statusCode == 404) {
-            status = "HTTP/1.1 404 Not Found" + "\r\n";
-        // TODO
-        // "The response MUST include an Allow header containing a list of valid methods for the requested resource."
-        } else if (statusCode == 405) {
-            status = "HTTP/1.1 405 Method Not Allowed" + "\r\n";
-        } else if (statusCode == 500) {
-            status = "HTTP/1.1 500 Internal Server Error" + "\r\n";
-        } else {
-            // TODO
-            // how do we deal with errors?
-            System.out.println("error, status code not supported");
-            status = "no status" + "\r\n";
-        }
-
-        // TODO
-        // this should change completely
-        if ( isFile ) {
-            fileName = responseString;
-            fin = new FileInputStream(fileName);
-            contentLength = "Content-Length: " + Integer.toString(fin.available()) + "\r\n";
-            if (!fileName.endsWith(".htm") && !fileName.endsWith(".html")) {
-                contentType = "Content-Type: \r\n";
-            }
-        } else {
-            contentLength = "Content-Length: " + responseString.length() + "\r\n";
-        }
-
-        output.writeBytes(status);
-        output.writeBytes(serverDetails);
-        output.writeBytes(contentType);
-        output.writeBytes(contentLength);
-        output.writeBytes("Connection: close\r\n");
-        output.writeBytes("\r\n");
-
-        if (isFile) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = fin.read(buffer)) != -1 ) {
-                output.write(buffer, 0, bytesRead);
-            }
-            fin.close();
-        } else {
-            output.writeBytes(responseString);
-        }
-
-        output.close();
-    }
-
-
-    public void run() {
-        try {
-            System.out.println();
-            System.out.println("new connection: " + clientSocket.getInetAddress() +
-                    ":" + clientSocket.getPort());
-
-            input = new BufferedReader(new InputStreamReader( clientSocket.getInputStream() ));
-            output = new DataOutputStream( clientSocket.getOutputStream() );
-
-            StringBuffer response = new StringBuffer();
-            response.append("request<br>");
-            response.append("-------<br>");
-
-            // DEBUG
-            System.out.println("request");
-            System.out.println("-------");
-
+    public void serviceRequest() throws Exception {
+        try (
+            BufferedReader input =
+                    new BufferedReader(new InputStreamReader( clientSocket.getInputStream() ));
+        ) {
             String inputLine;
             inputLine = input.readLine();
 
@@ -124,36 +48,82 @@ public class Worker extends Thread {
             String httpMethod = tokenizer.nextToken();
             String queryString = tokenizer.nextToken();
 
+            // DEBUG
+            ////////////////////////////////////////////////////////////////////////////////////////
+            System.out.println(inputLine);
             while ( input.ready() ) {
                 inputLine = input.readLine();
-
-                // DEBUG
                 System.out.println(inputLine);
-
-                response.append(inputLine + "<br>");
             }
+            ////////////////////////////////////////////////////////////////////////////////////////
 
-            if ( httpMethod.equals("GET") ) {
+
+            // response
+            ////////////////////////////////////////////////////////////////////////////////////////
+            DataOutputStream output = new DataOutputStream( clientSocket.getOutputStream() );
+
+            String Status;
+            String Date;
+            final String Server = "Jaws (ce325 web server)" + "\r\n";
+            String LastModified;
+            String Connection;
+            String ContentLength;
+            String ContentType;
+
+            Status = "HTTP/1.1 ";
+            LastModified = "";
+            Connection = "";
+            ContentLength = "";
+            ContentType = "";
+
+            Date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
+            // DEBUG
+
+            if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
                 // TODO
                 // serve index.html or index.htm if at least one of them exists,
                 // serve dynamically generated html code with the contents of the directory
                 // that was requested
-                if ( queryString.equals("/") ) {
-                    // send a dummy response
-                    sendResponse(200, response.toString(), false);
-                } else {
-                    // This is interpreted as a file name
-                    String fileName = queryString.replaceFirst("/", "");
-                    fileName = URLDecoder.decode(fileName, "UTF-8");
-                    if (new File(fileName).isFile()){
-                        sendResponse(200, fileName, true);
-                    } else {
-                        sendResponse(404, "<b>Not Found</b>", false);
+
+                File file = new File( URLDecoder.decode(queryString, "UTF-8") );
+                // check if the path exists
+                if ( file.exists() ) {
+                    Status += "200 OK" + "\r\n";
+
+                    // if the path is a file serve the file
+                    if ( file.isFile() ) {
+                    // if the path is a directory generate and serve the dynamic html page
+                    } else if ( file.isDirectory() ) {
                     }
+                } else {
+                    Status += "404 Not Found" + "\r\n";
                 }
+
             } else {
-                sendResponse(405, "<b>Method Not Allowed</b>", false);
+                Status += "405 Method Not Allowed" + "\r\n";
             }
+
+            String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+
+            System.out.println(header);
+
+            output.writeBytes(header);
+
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void run() {
+        // DEBUG
+        System.out.println();
+        System.out.println("new connection: " + clientSocket.getInetAddress() +
+                    ":" + clientSocket.getPort());
+
+        try {
+            serviceRequest();
         } catch (Exception e) {
             e.printStackTrace();
         }

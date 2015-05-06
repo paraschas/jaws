@@ -152,7 +152,7 @@ class Run {
         settings = parseConfigurationFile(configurationFilePath);
 
         // DEBUG
-        printSettings(settings);
+        //printSettings(settings);
 
         Server server = new Server(settings);
 
