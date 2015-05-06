@@ -97,8 +97,8 @@ public class Worker extends Thread {
                         // serve the index.htm file if it exists in the directory
                         } else if ( new File(path, "index.htm").exists() ) {
                             path = new File(path.toPath() + "/" + "index.htm");
-                        // serve the dynamically generated html code with the contents of
-                        // the directory that was requested
+                        // generate and serve an html page with the contents of the directory that
+                        // was requested
                         } else {
                             // TODO
                         }

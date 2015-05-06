@@ -8,18 +8,22 @@ Jaws -- A simple Java web server.
 
 multi-threaded
 
-parses PHP files if enabled in the configuration
+does not parse PHP files
 
 gets configuration from an XML file passed as an argument
 
+TODO
 display a page with statistics regarding the uptime, the number of connections, the errors occured, the mean page serve time
 
+TODO
 keeps a log of the connections and the errors
 
 supported file types:
 text files, jpg, png, tiff, bmp, avi, mpg4, mp3, ogg, pdf, ms-word, ms-excel, ms-ppt
 
-on a directory resource request, serve index.htm or index.html if one exists; else parse index.php and return the result if it exists; else return an HTML page with the contents of the directory as links, including a link to the parent directory, if one exists (see document root)
+on a directory resource request, serve index.htm or index.html if one exists;
+TODO
+else return an HTML page with the contents of the directory as links, including a link to the parent directory, if one exists (see document root)
 
 
 ## not supported
@@ -37,6 +41,7 @@ authentication (optional to implement this)
 
 the only supported method is the GET method of HTTP version 1.0 and 1.1
 
+TODO
 no supported headers for the request for HTTP 1.0 and only the Host header for HTTP 1.1
 
 headers send by the server: Date, Server, Last-Modified, Connection, Content-Length, Content-Type
@@ -47,6 +52,7 @@ supported HTTP status codes
 200 OK
 The request has succeeded.
 
+TODO
 400 Bad Request
 The request could not be understood by the server due to malformed syntax.
 
@@ -58,6 +64,7 @@ The method specified in the Request-Line is not allowed for the resource identif
 TODO
 The response MUST include an Allow header containing a list of valid methods for the requested resource.
 
+TODO
 500 Internal Server Error
 The server encountered an unexpected condition which prevented it from fulfilling the request.
 
@@ -66,13 +73,12 @@ The server encountered an unexpected condition which prevented it from fulfillin
 
 ## XML configuration file
 
-settings:
 listen port: the listening port
 statistics port: the port that the server serves the statistics page
 log, access filepath: the access log file path
 log, error filepath: the error log file path
 documentroot: the root directory of the server
-runphp: whether to run PHP scripts (optionally with parameters)
+runphp: whether to run PHP scripts (not implemented, will not implement)
 denyaccess, ip: IP address to deny service with optional CIDR notation
 
 example configuration file:
@@ -117,9 +123,6 @@ architecture
     create and run the server
 
 
-## Settings.java
-
-
 ## Server.java
     listen for requests
 
@@ -129,6 +132,12 @@ architecture
 ## Worker.java
     parse requests
 
+    serve files, set Content-Length, Content-Type (mimetype)
+
     NEXT
-    serve files with correct mimetype (especially *.html/*.htm ones)
-        search for a library that gives you the mimetype of a file
+    generate and serve an html page with the contents of the directory that was requested
+
+
+## Settings.java
+
+
