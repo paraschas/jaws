@@ -1,4 +1,4 @@
-// Worker.java
+// ResourcesWorker.java
 
 
 package com.paraschas.ce325.web_server;
@@ -20,20 +20,20 @@ import com.paraschas.ce325.web_server.Settings;
 
 
 /**
- * Worker to service requests spawned as a new thread.
+ * ResourcesWorker to service requests spawned as a new thread.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
  * @version  0.0.3
  */
-public class Worker extends Thread {
+public class ResourcesWorker extends Thread {
     Socket clientSocket;
     Settings settings;
 
 
     /**
-     * Worker constructor.
+     * ResourcesWorker constructor.
      */
-    public Worker(Socket clientSocket, Settings settings) {
+    public ResourcesWorker(Socket clientSocket, Settings settings) {
         this.clientSocket = clientSocket;
         this.settings = settings;
     }
@@ -82,7 +82,6 @@ public class Worker extends Thread {
             ContentType = "";
 
             Date = "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
-            // DEBUG
 
             if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
                 File path = new File( URLDecoder.decode(settings.getDocumentRootPath() + queryString, "UTF-8") );

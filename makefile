@@ -414,16 +414,16 @@ open:
 	vim -p \
 		Runner.java \
 		com/paraschas/ce325/web_server/Server.java \
-		com/paraschas/ce325/web_server/Worker.java \
-		com/paraschas/ce325/web_server/Settings.java \
-		config.xml \
+		com/paraschas/ce325/web_server/ResourcesWorker.java \
 		README.md \
 		makefile
+		#com/paraschas/ce325/web_server/Settings.java \
+		#config.xml \
 
 
 .PHONY: run
 run: $(JAVA_OBJS)
-	java Run config.xml
+	java Runner config.xml
 
 
 .PHONY: curl_root

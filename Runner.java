@@ -1,4 +1,4 @@
-// Run.java
+// Runner.java
 
 
 import java.io.File;
@@ -18,9 +18,9 @@ import com.paraschas.ce325.web_server.Settings;
  * Run Jaws. For testing and stuff.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.1.0
+ * @version  0.2.0
  */
-class Run {
+class Runner {
     public static void printSettings(Settings settings) {
         System.out.println();
         System.out.println("listen port: " + settings.getListenPort());
@@ -141,7 +141,7 @@ class Run {
 
         if (args.length == 0) {
             System.out.println("usage:");
-            System.out.println("java Run <CONFIGURATION_FILE.xml>");
+            System.out.println("java Runner <CONFIGURATION_FILE.xml>");
             System.exit(0);
         }
 
@@ -154,12 +154,12 @@ class Run {
         // DEBUG
         //printSettings(settings);
 
-        Server server = new Server(settings);
 
+        Server server = new Server(settings);
         // start the server
         try {
-            server.interruptibleServe(ipAddress, settings.getListenPort());
-        } catch (InterruptedException e) {
+            server.serve(ipAddress, settings.getListenPort());
+        } catch (IOException e) {
             System.out.println( e.getMessage() );
         }
     }

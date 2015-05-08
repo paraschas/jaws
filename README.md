@@ -124,7 +124,11 @@ architecture
 
 
 ## Server.java
-    listen for requests
+    listen for requests of resources
+
+    NEXT
+    TODO
+    listen for requests of the statistics page
 
     spawn a worker thread for every incoming request
 
@@ -134,7 +138,7 @@ architecture
 
     serve files, set Content-Length, Content-Type (mimetype)
 
-    NEXT
+    TODO
     generate and serve an html page with the contents of the directory that was requested
 
 
