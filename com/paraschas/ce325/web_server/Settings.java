@@ -44,60 +44,20 @@ public class Settings {
 
 
     /**
-     * Set the statistics port.
-     */
-    public void setStatisticsPort(String statisticsPort) {
-        this.statisticsPort = Integer.parseInt(statisticsPort);
-    }
-
-
-    /**
-     * Set the access log file path.
-     */
-    public void setAccessLogPath(String accessLogPath) {
-        this.accessLogPath = accessLogPath;
-    }
-
-
-    /**
-     * Set the error log file path.
-     */
-    public void setErrorLogPath(String errorLogPath) {
-        this.errorLogPath = errorLogPath;
-    }
-
-
-    /**
-     * Set the document root directory path.
-     */
-    public void setDocumentRootPath(String documentRootPath) {
-        this.documentRootPath = documentRootPath;
-    }
-
-
-    /**
-     * Set the runPhp variable.
-     */
-    public void setRunPhp(String runPhp) {
-        this.runPhp = runPhp;
-    }
-
-
-    /**
-     * Add an IP address to the denyAccessIps list.
-     */
-    public void addDenyAccessIp(String denyAccessIp) {
-        denyAccessIps.add(denyAccessIp);
-    }
-
-
-    /**
      * Get the listening port.
      *
      * @return listenPort the listening port.
      */
     public int getListenPort() {
         return listenPort;
+    }
+
+
+    /**
+     * Set the statistics port.
+     */
+    public void setStatisticsPort(String statisticsPort) {
+        this.statisticsPort = Integer.parseInt(statisticsPort);
     }
 
 
@@ -112,12 +72,28 @@ public class Settings {
 
 
     /**
+     * Set the access log file path.
+     */
+    public void setAccessLogPath(String accessLogPath) {
+        this.accessLogPath = accessLogPath;
+    }
+
+
+    /**
      * Get the access log file path.
      *
      * @return accessLogPath the access log file path.
      */
     public String getAccessLogPath() {
         return accessLogPath;
+    }
+
+
+    /**
+     * Set the error log file path.
+     */
+    public void setErrorLogPath(String errorLogPath) {
+        this.errorLogPath = errorLogPath;
     }
 
 
@@ -132,6 +108,14 @@ public class Settings {
 
 
     /**
+     * Set the document root directory path.
+     */
+    public void setDocumentRootPath(String documentRootPath) {
+        this.documentRootPath = documentRootPath;
+    }
+
+
+    /**
      * Get the document root directory path.
      *
      * @return documentRootPath the document root directory path.
@@ -142,12 +126,28 @@ public class Settings {
 
 
     /**
+     * Set the runPhp variable.
+     */
+    public void setRunPhp(String runPhp) {
+        this.runPhp = runPhp;
+    }
+
+
+    /**
      * Get the runPhp variable.
      *
      * @return runPhp the runPhp variable.
      */
     public String getRunPhp() {
         return runPhp;
+    }
+
+
+    /**
+     * Add an IP address to the denyAccessIps list.
+     */
+    public void addDenyAccessIp(String denyAccessIp) {
+        denyAccessIps.add(denyAccessIp);
     }
 
 
