@@ -412,7 +412,7 @@ com.paraschas.ce325.web_server : $(call PACKAGE_OBJS,com.paraschas.ce325.web_ser
 .PHONY: open
 open:
 	vim -p \
-		Run.java \
+		Runner.java \
 		com/paraschas/ce325/web_server/Server.java \
 		com/paraschas/ce325/web_server/Worker.java \
 		com/paraschas/ce325/web_server/Settings.java \
