@@ -18,7 +18,7 @@ import com.paraschas.ce325.web_server.Settings;
  * Run Jaws. For testing and stuff.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.2.0
+ * @version  0.3.0
  */
 class Runner {
     public static void printSettings(Settings settings) {
@@ -157,11 +157,11 @@ class Runner {
         //printSettings(settings);
 
         // create and start the resources server
-        Server resourcesServer = new Server(settings.getListenPort(), settings);
+        Server resourcesServer = new Server(settings, "Resources");
         resourcesServer.start();
 
         // create and start the statistics server
-        Server statisticsServer = new Server(settings.getStatisticsPort(), settings);
+        Server statisticsServer = new Server(settings, "Statistics");
         statisticsServer.start();
     }
 }
