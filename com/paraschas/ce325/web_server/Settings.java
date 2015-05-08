@@ -16,15 +16,17 @@ import java.util.ArrayList;
  * @version  0.3.0
  */
 public class Settings {
-    int listenPort;
-    int statisticsPort;
-    String accessLogPath;
-    String errorLogPath;
-    String documentRootPath;
+    // The IP address of the host machine the server will listen to.
+    private String ipAddress;
+    private int listenPort;
+    private int statisticsPort;
+    private String accessLogPath;
+    private String errorLogPath;
+    private String documentRootPath;
     // TODO
     // make boolean
-    String runPhp;
-    List<String> denyAccessIps;
+    private String runPhp;
+    private List<String> denyAccessIps;
 
 
     /**
@@ -32,6 +34,24 @@ public class Settings {
      */
     public Settings() {
         denyAccessIps = new ArrayList<String>();
+    }
+
+
+    /**
+     * Set the IP address.
+     */
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+
+    /**
+     * Get the IP address.
+     *
+     * @return ipAddress the IP address.
+     */
+    public String getIpAddress() {
+        return ipAddress;
     }
 
 

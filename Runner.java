@@ -23,6 +23,7 @@ import com.paraschas.ce325.web_server.Settings;
 class Runner {
     public static void printSettings(Settings settings) {
         System.out.println();
+        System.out.println("IP address: " + settings.getIpAddress());
         System.out.println("listen port: " + settings.getListenPort());
         System.out.println("statistics port: " + settings.getStatisticsPort());
         System.out.println("access log path: " + settings.getAccessLogPath());
@@ -150,17 +151,17 @@ class Runner {
         //System.out.println("configurationFilePath: " + configurationFilePath);
 
         settings = parseConfigurationFile(configurationFilePath);
+        settings.setIpAddress(ipAddress);
 
         // DEBUG
         //printSettings(settings);
 
-
         // create and start the resources server
-        Server resourcesServer = new Server(ipAddress, settings.getListenPort(), settings);
+        Server resourcesServer = new Server(settings.getListenPort(), settings);
         resourcesServer.start();
 
         // create and start the statistics server
-        Server statisticsServer = new Server(ipAddress, settings.getStatisticsPort(), settings);
+        Server statisticsServer = new Server(settings.getStatisticsPort(), settings);
         statisticsServer.start();
     }
 }

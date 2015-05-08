@@ -14,10 +14,9 @@ import java.net.InetSocketAddress;
  * A simple web server.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.2
+ * @version  0.0.3
  */
 public class Server extends Thread {
-    String ipAddress;
     int portNumber;
     Settings settings;
 
@@ -25,8 +24,7 @@ public class Server extends Thread {
     /**
      * Server constructor.
      */
-    public Server(String ipAddress, int portNumber, Settings settings) {
-        this.ipAddress = ipAddress;
+    public Server(int portNumber, Settings settings) {
         this.portNumber = portNumber;
         this.settings = settings;
     }
@@ -39,6 +37,7 @@ public class Server extends Thread {
         try (
             ServerSocket serverSocket = new ServerSocket();
         ) {
+            String ipAddress = settings.getIpAddress();
             serverSocket.bind(new InetSocketAddress(ipAddress, portNumber));
             System.out.println("listening on " + ipAddress + ":" + Integer.toString(portNumber));
 
