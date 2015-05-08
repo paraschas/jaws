@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 
 /**
- * ResourcesWorker to service requests spawned as a new thread.
+ * Worker thread that services resources requests.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
  * @version  0.0.3
