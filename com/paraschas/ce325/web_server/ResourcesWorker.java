@@ -112,23 +112,24 @@ public class ResourcesWorker extends Thread {
                     ContentType = "Content-Type: " +
                             Files.probeContentType( path.toPath() ) + "\r\n";
 
-                    FileInputStream fin = new FileInputStream(path);
-
                     String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
 
                     // DEBUG
                     System.out.println(header);
-
                     output.writeBytes(header);
 
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
+                    if ( httpMethod.equals("GET") ) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
 
-                    while ((bytesRead = fin.read(buffer)) != -1 ) {
-                        output.write(buffer, 0, bytesRead);
+                        FileInputStream fin = new FileInputStream(path);
+
+                        while ((bytesRead = fin.read(buffer)) != -1 ) {
+                            output.write(buffer, 0, bytesRead);
+                        }
+
+                        fin.close();
                     }
-
-                    fin.close();
                 } else {
                     Status += "404 Not Found" + "\r\n";
 
@@ -136,7 +137,6 @@ public class ResourcesWorker extends Thread {
 
                     // DEBUG
                     System.out.println(header);
-
                     output.writeBytes(header);
                 }
             } else {
@@ -146,7 +146,6 @@ public class ResourcesWorker extends Thread {
 
                 // DEBUG
                 System.out.println(header);
-
                 output.writeBytes(header);
             }
 
