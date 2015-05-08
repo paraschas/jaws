@@ -125,19 +125,22 @@ architecture
 
 
 ## Server.java
-    NEXT
     listen for requests of resources or the statistics page
-
     spawn a worker thread for every incoming request
 
 
 ## ResourcesWorker.java
     parse requests
-
     serve files, set Content-Length, Content-Type (mimetype)
-
+    NEXT
     TODO
     generate and serve an html page with the contents of the directory that was requested
+
+
+## StatisticsWorker.java
+    parse requests
+    TODO
+    generate and serve the statistics page
 
 
 ## Settings.java
