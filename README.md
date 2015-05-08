@@ -115,25 +115,23 @@ the error log entry format could be:
 architecture
 ---
 
-## Run.java
+## Runner.java
     get configuration from an XML file
         parse xml file
         store the configuration data to a Settings object
         get and check the data from the Settings object
-    create and run the server
+    create and start the resources server
+    create and start the statistics server
 
 
 ## Server.java
-    listen for requests of resources
-
     NEXT
-    TODO
-    listen for requests of the statistics page
+    listen for requests of resources or the statistics page
 
     spawn a worker thread for every incoming request
 
 
-## Worker.java
+## ResourcesWorker.java
     parse requests
 
     serve files, set Content-Length, Content-Type (mimetype)
@@ -143,5 +141,4 @@ architecture
 
 
 ## Settings.java
-
-
+    store the various settings of the server; handle with accessors and mutators

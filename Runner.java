@@ -155,12 +155,12 @@ class Runner {
         //printSettings(settings);
 
 
-        Server server = new Server(settings);
-        // start the server
-        try {
-            server.serve(ipAddress, settings.getListenPort());
-        } catch (IOException e) {
-            System.out.println( e.getMessage() );
-        }
+        // create and start the resources server
+        Server resourcesServer = new Server(ipAddress, settings.getListenPort(), settings);
+        resourcesServer.start();
+
+        // create and start the statistics server
+        Server statisticsServer = new Server(ipAddress, settings.getStatisticsPort(), settings);
+        statisticsServer.start();
     }
 }

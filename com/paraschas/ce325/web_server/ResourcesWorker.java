@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
-import com.paraschas.ce325.web_server.Settings;
-
 
 /**
  * ResourcesWorker to service requests spawned as a new thread.

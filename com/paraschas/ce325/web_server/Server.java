@@ -9,8 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 
-import com.paraschas.ce325.web_server.Settings;
-
 
 /**
  * A simple web server.
@@ -18,14 +16,18 @@ import com.paraschas.ce325.web_server.Settings;
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
  * @version  0.0.2
  */
-public class Server {
+public class Server extends Thread {
+    String ipAddress;
+    int portNumber;
     Settings settings;
 
 
     /**
      * Server constructor.
      */
-    public Server(Settings settings) {
+    public Server(String ipAddress, int portNumber, Settings settings) {
+        this.ipAddress = ipAddress;
+        this.portNumber = portNumber;
         this.settings = settings;
     }
 
@@ -33,7 +35,7 @@ public class Server {
     /**
      * Listen for requests and spawn worker threads to service them.
      */
-    public void serve(String ipAddress, int portNumber) throws IOException {
+    public void serve() throws IOException {
         try (
             ServerSocket serverSocket = new ServerSocket();
         ) {
@@ -53,6 +55,15 @@ public class Server {
             }
         } catch (IOException e) {
             System.out.println( e.getMessage() );
+        }
+    }
+
+
+    public void run() {
+        try {
+            serve();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

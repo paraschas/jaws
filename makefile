@@ -415,6 +415,7 @@ open:
 		Runner.java \
 		com/paraschas/ce325/web_server/Server.java \
 		com/paraschas/ce325/web_server/ResourcesWorker.java \
+		com/paraschas/ce325/web_server/StatisticsWorker.java \
 		README.md \
 		makefile
 		#com/paraschas/ce325/web_server/Settings.java \
@@ -436,3 +437,9 @@ curl_root:
 curl_404:
 	clear
 	curl -I localhost:8000/404.html
+
+
+.PHONY: curl_statistics
+curl_statistics:
+	clear
+	curl -I localhost:8001
