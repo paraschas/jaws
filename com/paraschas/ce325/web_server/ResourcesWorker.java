@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.StringTokenizer;
@@ -21,11 +22,13 @@ import java.util.StringTokenizer;
  * Worker thread that services resources requests.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.3
+ * @version  0.0.4
  */
 public class ResourcesWorker extends Thread {
-    Socket clientSocket;
-    Settings settings;
+    final private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+
+    private Socket clientSocket;
+    private Settings settings;
 
 
     /**
@@ -79,7 +82,7 @@ public class ResourcesWorker extends Thread {
             ContentLength = "";
             ContentType = "";
 
-            Date = "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
+            Date = "Date: " + dateFormat.format(Calendar.getInstance().getTime()) + "\r\n";
 
             if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
                 File path = new File( URLDecoder.decode(settings.getDocumentRootPath() + queryString, "UTF-8") );
@@ -105,7 +108,7 @@ public class ResourcesWorker extends Thread {
                     // set the Status Code
                     Status += "200 OK" + "\r\n";
 
-                    LastModified = "Last-Modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(path.lastModified()) + "\r\n";
+                    LastModified = "Last-Modified: " + dateFormat.format(path.lastModified()) + "\r\n";
 
                     // get the size of the file
                     ContentLength = "Content-Length: " + path.length() + "\r\n";

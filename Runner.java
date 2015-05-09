@@ -10,8 +10,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 
-import com.paraschas.ce325.web_server.Server;
+import com.paraschas.ce325.web_server.ResourcesServer;
+import com.paraschas.ce325.web_server.StatisticsServer;
 import com.paraschas.ce325.web_server.Settings;
+import com.paraschas.ce325.web_server.Statistics;
 
 
 /**
@@ -137,6 +139,7 @@ class Runner {
         String ipAddress = "localhost";
         String resourcesDirectoryPath = ".";
         Settings settings = new Settings();
+        Statistics statistics = new Statistics();
 
         if (args.length == 0) {
             System.out.println("usage:");
@@ -156,11 +159,11 @@ class Runner {
         //printSettings(settings);
 
         // create and start the resources server
-        Server resourcesServer = new Server(settings, "Resources");
+        ResourcesServer resourcesServer = new ResourcesServer(settings);
         resourcesServer.start();
 
         // create and start the statistics server
-        Server statisticsServer = new Server(settings, "Statistics");
+        StatisticsServer statisticsServer = new StatisticsServer(settings, statistics);
         statisticsServer.start();
     }
 }

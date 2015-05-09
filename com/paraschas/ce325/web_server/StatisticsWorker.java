@@ -21,19 +21,21 @@ import java.util.StringTokenizer;
  * Worker thread that generates and serves the statistics page.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.1
+ * @version  0.0.2
  */
 public class StatisticsWorker extends Thread {
     Socket clientSocket;
     Settings settings;
+    Statistics statistics;
 
 
     /**
      * StatisticsWorker constructor.
      */
-    public StatisticsWorker(Socket clientSocket, Settings settings) {
+    public StatisticsWorker(Socket clientSocket, Settings settings, Statistics statistics) {
         this.clientSocket = clientSocket;
         this.settings = settings;
+        this.statistics = statistics;
     }
 
 
@@ -41,7 +43,20 @@ public class StatisticsWorker extends Thread {
      * Generate the statistics HTML page.
      */
     private String generateStatisticsPage() {
-        String runningTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime());
+        // TODO
+        String startedAt = statistics.getStartedAt();
+        String runningFor = statistics.getRunningFor();
+
+        // DEBUG
+        System.out.println("startedAt: " + startedAt);
+        System.out.println("runningFor: " + runningFor);
+
+        String allServicedRequests = "allServicedRequests";
+        String http400Requests = "http400Requests";
+        String http404Requests = "http404Requests";
+        String http405Requests = "http405Requests";
+        String http500Requests = "http500Requests";
+        String averageServiceTime = "averageServiceTime";
 
         StringBuilder statisticsPage = new StringBuilder();
 
@@ -57,7 +72,64 @@ public class StatisticsWorker extends Thread {
         statisticsPage.append("        <link rel=\"stylesheet\" href=\"resources/main.css\">\n");
         statisticsPage.append("    </head>\n");
         statisticsPage.append("    <body>\n");
-        statisticsPage.append("        <p>" + "NOT IMPLEMENTED YET" + "</p>\n");
+        statisticsPage.append("        <h1>Jaws (ce325 web server) statistics</h1>\n");
+        statisticsPage.append("        <table>\n");
+
+        // table header
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <th>field</th>\n");
+        statisticsPage.append("                <th>value</th>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // started at
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>started at</td>\n");
+        statisticsPage.append("                <td>" + startedAt + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // running for
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>running for</td>\n");
+        statisticsPage.append("                <td>" + runningFor + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // all serviced requests
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>all serviced requests</td>\n");
+        statisticsPage.append("                <td>" + allServicedRequests + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // HTTP 400 requests
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>HTTP 400 requests</td>\n");
+        statisticsPage.append("                <td>" + http400Requests + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // HTTP 404 requests
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>HTTP 404 requests</td>\n");
+        statisticsPage.append("                <td>" + http404Requests + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // HTTP 405 requests
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>HTTP 405 requests</td>\n");
+        statisticsPage.append("                <td>" + http405Requests + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // HTTP 500 requests
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>HTTP 500 requests</td>\n");
+        statisticsPage.append("                <td>" + http500Requests + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        // average service time
+        statisticsPage.append("            <tr>\n");
+        statisticsPage.append("                <td>average service time (in ms)</td>\n");
+        statisticsPage.append("                <td>" + averageServiceTime + "</td>\n");
+        statisticsPage.append("            </tr>\n");
+
+        statisticsPage.append("        </table>\n");
         statisticsPage.append("    </body>\n");
         statisticsPage.append("</html>\n");
 
