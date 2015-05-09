@@ -43,6 +43,53 @@ public class ResourcesWorker extends Thread {
 
 
     /**
+     * Generate the directory contents HTML page.
+     */
+    private String generateDirectoryPage(File directory) throws Exception {
+        String currentDirectory = directory.getName();
+
+        StringBuilder directoryPage = new StringBuilder();
+
+        directoryPage.append("<!doctype html>\n");
+        directoryPage.append("<html>\n");
+        directoryPage.append("    <head>\n");
+        directoryPage.append("        <meta charset=\"utf-8\">\n");
+        directoryPage.append("        <title>index of: " + currentDirectory + " - Jaws (ce325 web server)</title>\n");
+        directoryPage.append("    </head>\n");
+        directoryPage.append("    <body>\n");
+        directoryPage.append("        <h1>index of: " + currentDirectory + "</h1>\n");
+        directoryPage.append("        <table>\n");
+
+        // table header
+        directoryPage.append("            <tr>\n");
+        directoryPage.append("                <th>name</th>\n");
+        directoryPage.append("                <th>size</th>\n");
+        directoryPage.append("                <th>last modified</th>\n");
+        //directoryPage.append("                <th>mimetype</th>\n");
+        directoryPage.append("            </tr>\n");
+
+        for (File file: directory.listFiles()) {
+            directoryPage.append("            <tr>\n");
+            // NEXT
+            // TODO
+            // create link to the file
+            directoryPage.append("                <td>" + file.getName() + "</td>\n");
+            directoryPage.append("                <td>" + file.length() + "</td>\n");
+            directoryPage.append("                <td>" + dateTimeFormat.format(file.lastModified()) + "</td>\n");
+            //directoryPage.append("                <td>" + Files.probeContentType( file.toPath() ) + "</td>\n");
+            directoryPage.append("            </tr>\n");
+        }
+
+        directoryPage.append("        </table>\n");
+        directoryPage.append("        <p>Jaws (ce325 web server) at " + settings.getIpAddress() + ":" + settings.getListenPort() + "</p>\n");
+        directoryPage.append("    </body>\n");
+        directoryPage.append("</html>\n");
+
+        return directoryPage.toString();
+    }
+
+
+    /**
      * Service a request.
      */
     public void serviceRequest() throws Exception {
@@ -106,12 +153,13 @@ public class ResourcesWorker extends Thread {
                         // generate and serve an html page with the contents of the directory that
                         // was requested
                         } else {
-                            // NEXT
-                            // TODO
-
                             // generate the directory contents HTML page
-                            //String directoryPage = generateDirectoryPage();
                             String directoryPage = "";
+                            try {
+                                directoryPage = generateDirectoryPage(path);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                             // set the Status Code
                             Status += "200 OK" + "\r\n";
@@ -132,7 +180,7 @@ public class ResourcesWorker extends Thread {
 
                             if ( httpMethod.equals("GET") ) {
                                 // DEBUG
-                                System.out.println(directoryPage);
+                                //System.out.println(directoryPage);
                                 output.writeBytes(directoryPage);
                             }
                         }

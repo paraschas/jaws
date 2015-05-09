@@ -133,9 +133,10 @@ architecture
 ## ResourcesWorker.java
     parse requests
     serve files, set Content-Length, Content-Type (mimetype)
-    NEXT
-    TODO
     generate and serve an html page with the contents of the directory that was requested
+        NEXT
+        TODO
+        create links for each file in the directory
 
 
 ## StatisticsWorker.java
