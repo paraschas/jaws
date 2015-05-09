@@ -38,6 +38,34 @@ public class StatisticsWorker extends Thread {
 
 
     /**
+     * Generate the statistics HTML page.
+     */
+    private String generateStatisticsPage() {
+        String runningTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime());
+
+        StringBuilder statisticsPage = new StringBuilder();
+
+        statisticsPage.append("<!doctype html>\n");
+        statisticsPage.append("<html>\n");
+        statisticsPage.append("    <head>\n");
+        statisticsPage.append("        <meta charset=\"utf-8\">\n");
+        statisticsPage.append("        <title>Jaws (ce325 web server) statistics</title>\n");
+        statisticsPage.append("\n");
+        statisticsPage.append("        <link rel=\"shortcut icon\" href=\"resources/favicon.ico\">\n");
+        statisticsPage.append("\n");
+        statisticsPage.append("        <link rel=\"stylesheet\" href=\"resources/normalize.css\">\n");
+        statisticsPage.append("        <link rel=\"stylesheet\" href=\"resources/main.css\">\n");
+        statisticsPage.append("    </head>\n");
+        statisticsPage.append("    <body>\n");
+        statisticsPage.append("        <p>" + "NOT IMPLEMENTED YET" + "</p>\n");
+        statisticsPage.append("    </body>\n");
+        statisticsPage.append("</html>\n");
+
+        return statisticsPage.toString();
+    }
+
+
+    /**
      * Service a request.
      */
     public void serviceRequest() throws Exception {
@@ -106,29 +134,11 @@ public class StatisticsWorker extends Thread {
                     output.writeBytes(header);
 
                     if ( httpMethod.equals("GET") ) {
-                        String runningTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime());
-
-                        StringBuilder statisticsPage = new StringBuilder();
-
-                        statisticsPage.append("<!doctype html>\n");
-                        statisticsPage.append("<html>\n");
-                        statisticsPage.append("    <head>\n");
-                        statisticsPage.append("        <meta charset=\"utf-8\">\n");
-                        statisticsPage.append("        <title>Jaws (ce325 web server) statistics</title>\n");
-                        statisticsPage.append("\n");
-                        statisticsPage.append("        <link rel=\"shortcut icon\" href=\"resources/favicon.ico\">\n");
-                        statisticsPage.append("\n");
-                        statisticsPage.append("        <link rel=\"stylesheet\" href=\"resources/normalize.css\">\n");
-                        statisticsPage.append("        <link rel=\"stylesheet\" href=\"resources/main.css\">\n");
-                        statisticsPage.append("    </head>\n");
-                        statisticsPage.append("    <body>\n");
-                        statisticsPage.append("        <p>" + "NOT IMPLEMENTED YET" + "</p>\n");
-                        statisticsPage.append("    </body>\n");
-                        statisticsPage.append("</html>\n");
+                        String statisticsPage = generateStatisticsPage();
 
                         // DEBUG
-                        System.out.println( statisticsPage.toString() );
-                        output.writeBytes( statisticsPage.toString() );
+                        System.out.println(statisticsPage);
+                        output.writeBytes(statisticsPage);
                     }
                 } else {
                     File path = new File( URLDecoder.decode(settings.getResourcesDirectoryPath() + queryString, "UTF-8") );
