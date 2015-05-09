@@ -18,13 +18,15 @@ import java.net.InetSocketAddress;
  */
 public class ResourcesServer extends Thread {
     Settings settings;
+    Statistics statistics;
 
 
     /**
      * ResourcesServer constructor.
      */
-    public ResourcesServer(Settings settings) {
+    public ResourcesServer(Settings settings, Statistics statistics) {
         this.settings = settings;
+        this.statistics = statistics;
     }
 
 
@@ -46,7 +48,7 @@ public class ResourcesServer extends Thread {
                 try {
                     Socket clientSocket = serverSocket.accept();
 
-                    ResourcesWorker resourcesWorker = new ResourcesWorker(clientSocket, settings);
+                    ResourcesWorker resourcesWorker = new ResourcesWorker(clientSocket, settings, statistics);
                     resourcesWorker.start();
                 } catch (IOException e) {
                     System.out.println( e.getMessage() );

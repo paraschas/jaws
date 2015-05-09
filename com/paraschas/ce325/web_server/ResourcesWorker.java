@@ -25,18 +25,20 @@ import java.util.StringTokenizer;
  * @version  0.0.4
  */
 public class ResourcesWorker extends Thread {
-    final private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+    final private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     private Socket clientSocket;
     private Settings settings;
+    private Statistics statistics;
 
 
     /**
      * ResourcesWorker constructor.
      */
-    public ResourcesWorker(Socket clientSocket, Settings settings) {
+    public ResourcesWorker(Socket clientSocket, Settings settings, Statistics statistics) {
         this.clientSocket = clientSocket;
         this.settings = settings;
+        this.statistics = statistics;
     }
 
 
@@ -48,6 +50,8 @@ public class ResourcesWorker extends Thread {
             BufferedReader input =
                     new BufferedReader(new InputStreamReader( clientSocket.getInputStream() ));
         ) {
+            long startServicingRequest = System.currentTimeMillis();
+
             String inputLine;
             inputLine = input.readLine();
 
@@ -152,8 +156,11 @@ public class ResourcesWorker extends Thread {
                 System.out.println(header);
                 output.writeBytes(header);
             }
-
             output.close();
+
+            long now = System.currentTimeMillis();
+            statistics.addTotalServiceTime(now - startServicingRequest);
+            statistics.incrementAllServicedRequests();
         } catch (Exception e) {
             e.printStackTrace();
         }

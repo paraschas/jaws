@@ -60,7 +60,6 @@ class Runner {
             // get the root node
             Node root = document.getDocumentElement();
 
-            // http://stackoverflow.com/questions/5386991/java-most-efficient-method-to-iterate-over-all-elements-in-a-org-w3c-dom-docume
             NodeList nodeList = document.getElementsByTagName("*");
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
@@ -159,7 +158,7 @@ class Runner {
         //printSettings(settings);
 
         // create and start the resources server
-        ResourcesServer resourcesServer = new ResourcesServer(settings);
+        ResourcesServer resourcesServer = new ResourcesServer(settings, statistics);
         resourcesServer.start();
 
         // create and start the statistics server

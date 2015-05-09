@@ -414,8 +414,8 @@ open:
 	vim -p \
 		Runner.java \
 		com/paraschas/ce325/web_server/ResourcesServer.java \
-		com/paraschas/ce325/web_server/StatisticsServer.java \
 		com/paraschas/ce325/web_server/ResourcesWorker.java \
+		com/paraschas/ce325/web_server/StatisticsServer.java \
 		com/paraschas/ce325/web_server/StatisticsWorker.java \
 		com/paraschas/ce325/web_server/Statistics.java \
 		README.md \
