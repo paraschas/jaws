@@ -125,13 +125,8 @@ architecture
     create and start the statistics server
 
 
-## ResourcesServer.java
-    listen for requests of resources
-    spawn a worker thread for every incoming request
-
-
-## StatisticsServer.java
-    listen for requests of the statistics page
+## Server.java
+    listen for requests of resources or the statistics page
     spawn a worker thread for every incoming request
 
 

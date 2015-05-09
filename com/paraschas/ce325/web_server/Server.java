@@ -1,4 +1,4 @@
-// StatisticsServer.java
+// Server.java
 
 
 package com.paraschas.ce325.web_server;
@@ -11,22 +11,24 @@ import java.net.InetSocketAddress;
 
 
 /**
- * A server that spawns worker threads to service requests for the statistics page.
+ * A server that spawns worker threads to service requests for resources or the statistics page.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.1.0
+ * @version  0.3.0
  */
-public class StatisticsServer extends Thread {
+public class Server extends Thread {
     Settings settings;
     Statistics statistics;
+    String serverType;
 
 
     /**
-     * StatisticsServer constructor.
+     * Server constructor.
      */
-    public StatisticsServer(Settings settings, Statistics statistics) {
+    public Server(Settings settings, Statistics statistics, String serverType) {
         this.settings = settings;
         this.statistics = statistics;
+        this.serverType = serverType;
     }
 
 
@@ -38,7 +40,14 @@ public class StatisticsServer extends Thread {
             ServerSocket serverSocket = new ServerSocket();
         ) {
             String ipAddress = settings.getIpAddress();
-            int portNumber = settings.getStatisticsPort();
+
+            int portNumber;
+            if ( serverType.equals("Resources") ) {
+                portNumber = settings.getListenPort();
+            // serverType.equals("Statistics")
+            } else {
+                portNumber = settings.getStatisticsPort();
+            }
 
             serverSocket.bind(new InetSocketAddress(ipAddress, portNumber));
             System.out.println("listening on " + ipAddress + ":" + Integer.toString(portNumber));
@@ -48,8 +57,14 @@ public class StatisticsServer extends Thread {
                 try {
                     Socket clientSocket = serverSocket.accept();
 
-                    StatisticsWorker statisticsWorker = new StatisticsWorker(clientSocket, settings, statistics);
-                    statisticsWorker.start();
+                    if ( serverType.equals("Resources") ) {
+                        ResourcesWorker resourcesWorker = new ResourcesWorker(clientSocket, settings, statistics);
+                        resourcesWorker.start();
+                    // serverType.equals("Statistics")
+                    } else {
+                        StatisticsWorker statisticsWorker = new StatisticsWorker(clientSocket, settings, statistics);
+                        statisticsWorker.start();
+                    }
                 } catch (IOException e) {
                     System.out.println( e.getMessage() );
                 }

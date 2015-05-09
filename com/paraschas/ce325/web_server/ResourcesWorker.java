@@ -110,7 +110,8 @@ public class ResourcesWorker extends Thread {
                             // TODO
 
                             // generate the directory contents HTML page
-                            String directoryPage = generateDirectoryPage();
+                            //String directoryPage = generateDirectoryPage();
+                            String directoryPage = "";
 
                             // set the Status Code
                             Status += "200 OK" + "\r\n";
