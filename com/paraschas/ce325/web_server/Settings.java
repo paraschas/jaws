@@ -23,6 +23,7 @@ public class Settings {
     private String accessLogPath;
     private String errorLogPath;
     private String documentRootPath;
+    private String resourcesDirectoryPath;
     // TODO
     // make boolean
     private String runPhp;
@@ -142,6 +143,24 @@ public class Settings {
      */
     public String getDocumentRootPath() {
         return documentRootPath;
+    }
+
+
+    /**
+     * Set the resources directory path.
+     */
+    public void setResourcesDirectoryPath(String resourcesDirectoryPath) {
+        this.resourcesDirectoryPath = resourcesDirectoryPath;
+    }
+
+
+    /**
+     * Get the resources directory path.
+     *
+     * @return resourcesDirectoryPath the resources directory path.
+     */
+    public String getResourcesDirectoryPath() {
+        return resourcesDirectoryPath;
     }
 
 

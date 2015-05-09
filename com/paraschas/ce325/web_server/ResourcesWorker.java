@@ -54,11 +54,11 @@ public class ResourcesWorker extends Thread {
 
             // DEBUG
             ////////////////////////////////////////////////////////////////////////////////////////
-            System.out.println(inputLine);
-            while ( input.ready() ) {
-                inputLine = input.readLine();
-                System.out.println(inputLine);
-            }
+            //System.out.println(inputLine);
+            //while ( input.ready() ) {
+            //    inputLine = input.readLine();
+            //    System.out.println(inputLine);
+            //}
             ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -94,6 +94,7 @@ public class ResourcesWorker extends Thread {
                         // serve the index.htm file if it exists in the directory
                         } else if ( new File(path, "index.htm").exists() ) {
                             path = new File(path.toPath() + "/" + "index.htm");
+                        // TODO
                         // generate and serve an html page with the contents of the directory that
                         // was requested
                         } else {

@@ -3,6 +3,8 @@ Jaws -- A simple Java web server.
 
 ## description
 
+uses the CSS stylesheets and the favicon from [HTML5 Boilerplate](https://html5boilerplate.com/) version 5.2.0
+
 
 ## specification
 

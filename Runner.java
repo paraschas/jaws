@@ -29,6 +29,7 @@ class Runner {
         System.out.println("access log path: " + settings.getAccessLogPath());
         System.out.println("error log path: " + settings.getErrorLogPath());
         System.out.println("document root path: " + settings.getDocumentRootPath());
+        System.out.println("resources directory path: " + settings.getResourcesDirectoryPath());
         System.out.println("run PHP: " + settings.getRunPhp());
         System.out.println("deny access:");
         List<String> denyAccessIps = settings.getDenyAccessIps();
@@ -46,9 +47,7 @@ class Runner {
      * http://docs.oracle.com/javase/7/docs/api/org/w3c/dom/Document.html
      * http://docs.oracle.com/javase/7/docs/api/org/w3c/dom/Node.html
      */
-    public static Settings parseConfigurationFile(String configurationFilePath) {
-        Settings settings = new Settings();
-
+    public static void parseConfigurationFile(Settings settings, String configurationFilePath) {
         try {
             File xmlFile = new File(configurationFilePath);
 
@@ -130,14 +129,13 @@ class Runner {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return settings;
     }
 
 
     public static void main(String[] args) {
         String configurationFilePath;
         String ipAddress = "localhost";
+        String resourcesDirectoryPath = ".";
         Settings settings = new Settings();
 
         if (args.length == 0) {
@@ -150,8 +148,9 @@ class Runner {
         // log info
         //System.out.println("configurationFilePath: " + configurationFilePath);
 
-        settings = parseConfigurationFile(configurationFilePath);
         settings.setIpAddress(ipAddress);
+        settings.setResourcesDirectoryPath(resourcesDirectoryPath);
+        parseConfigurationFile(settings, configurationFilePath);
 
         // DEBUG
         //printSettings(settings);
