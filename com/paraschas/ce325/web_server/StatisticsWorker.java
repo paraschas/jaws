@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.StringTokenizer;
@@ -24,9 +25,11 @@ import java.util.StringTokenizer;
  * @version  0.0.2
  */
 public class StatisticsWorker extends Thread {
-    Socket clientSocket;
-    Settings settings;
-    Statistics statistics;
+    final private DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private Socket clientSocket;
+    private Settings settings;
+    private Statistics statistics;
 
 
     /**
@@ -43,7 +46,6 @@ public class StatisticsWorker extends Thread {
      * Generate the statistics HTML page.
      */
     private String generateStatisticsPage() {
-        // TODO
         String startedAt = statistics.getStartedAt();
         String runningFor = statistics.getRunningFor();
         String allServicedRequests = Integer.toString( statistics.getAllServicedRequests() );
@@ -183,22 +185,21 @@ public class StatisticsWorker extends Thread {
             ContentLength = "";
             ContentType = "";
 
-            Date = "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
+            Date = "Date: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + "\r\n";
 
             if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
                 // check if the request is valid
                 if ( queryString.equals("/") ) {
-                    // TODO
                     // generate the statistics page
+                    String statisticsPage = generateStatisticsPage();
 
                     // set the Status Code
                     Status += "200 OK" + "\r\n";
 
-                    LastModified = "Last-Modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Calendar.getInstance().getTime()) + "\r\n";
+                    LastModified = "Last-Modified: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + "\r\n";
 
-                    // TODO
-                    // get the size of the file
-                    //ContentLength = "Content-Length: " + <html-page-size> + "\r\n";
+                    // get the size of the page
+                    ContentLength = "Content-Length: " + statisticsPage.length() + "\r\n";
 
                     // set the mimetype of the file
                     ContentType = "Content-Type: " + "text/html" + "\r\n";
@@ -210,8 +211,6 @@ public class StatisticsWorker extends Thread {
                     output.writeBytes(header);
 
                     if ( httpMethod.equals("GET") ) {
-                        String statisticsPage = generateStatisticsPage();
-
                         // DEBUG
                         System.out.println(statisticsPage);
                         output.writeBytes(statisticsPage);
@@ -224,7 +223,7 @@ public class StatisticsWorker extends Thread {
                         // set the Status Code
                         Status += "200 OK" + "\r\n";
 
-                        LastModified = "Last-Modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(path.lastModified()) + "\r\n";
+                        LastModified = "Last-Modified: " + dateTimeFormat.format(path.lastModified()) + "\r\n";
 
                         // get the size of the file
                         ContentLength = "Content-Length: " + path.length() + "\r\n";

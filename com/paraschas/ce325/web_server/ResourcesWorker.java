@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
  * @version  0.0.4
  */
 public class ResourcesWorker extends Thread {
-    final private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    final private DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private Socket clientSocket;
     private Settings settings;
@@ -86,57 +86,88 @@ public class ResourcesWorker extends Thread {
             ContentLength = "";
             ContentType = "";
 
-            Date = "Date: " + dateFormat.format(Calendar.getInstance().getTime()) + "\r\n";
+            Date = "Date: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + "\r\n";
 
             if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
                 File path = new File( URLDecoder.decode(settings.getDocumentRootPath() + queryString, "UTF-8") );
                 // check if the path exists
                 if ( path.exists() ) {
-                    // if the path is a file, serve the file.
+                    boolean isFile = false;
 
                     if ( path.isDirectory() ) {
                         // serve the index.html file if it exists in the directory
                         if ( new File(path, "index.html").exists() ) {
                             path = new File(path.toPath() + "/" + "index.html");
+                            isFile = true;
                         // serve the index.htm file if it exists in the directory
                         } else if ( new File(path, "index.htm").exists() ) {
                             path = new File(path.toPath() + "/" + "index.htm");
-                        // TODO
+                            isFile = true;
                         // generate and serve an html page with the contents of the directory that
                         // was requested
                         } else {
+                            // NEXT
                             // TODO
+
+                            // generate the directory contents HTML page
+                            String directoryPage = generateDirectoryPage();
+
+                            // set the Status Code
+                            Status += "200 OK" + "\r\n";
+
+                            LastModified = "Last-Modified: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + "\r\n";
+
+                            // get the size of the page
+                            ContentLength = "Content-Length: " + directoryPage.length() + "\r\n";
+
+                            // set the mimetype of the file
+                            ContentType = "Content-Type: " + "text/html" + "\r\n";
+
+                            String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+
+                            // DEBUG
+                            System.out.println(header);
+                            output.writeBytes(header);
+
+                            if ( httpMethod.equals("GET") ) {
+                                // DEBUG
+                                System.out.println(directoryPage);
+                                output.writeBytes(directoryPage);
+                            }
                         }
                     }
 
-                    // set the Status Code
-                    Status += "200 OK" + "\r\n";
+                    // if the path is a file, serve the file.
+                    if (isFile) {
+                        // set the Status Code
+                        Status += "200 OK" + "\r\n";
 
-                    LastModified = "Last-Modified: " + dateFormat.format(path.lastModified()) + "\r\n";
+                        LastModified = "Last-Modified: " + dateTimeFormat.format(path.lastModified()) + "\r\n";
 
-                    // get the size of the file
-                    ContentLength = "Content-Length: " + path.length() + "\r\n";
-                    // get the mimetype of the file
-                    ContentType = "Content-Type: " +
-                            Files.probeContentType( path.toPath() ) + "\r\n";
+                        // get the size of the file
+                        ContentLength = "Content-Length: " + path.length() + "\r\n";
+                        // get the mimetype of the file
+                        ContentType = "Content-Type: " +
+                                Files.probeContentType( path.toPath() ) + "\r\n";
 
-                    String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+                        String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
 
-                    // DEBUG
-                    System.out.println(header);
-                    output.writeBytes(header);
+                        // DEBUG
+                        System.out.println(header);
+                        output.writeBytes(header);
 
-                    if ( httpMethod.equals("GET") ) {
-                        byte[] buffer = new byte[1024];
-                        int bytesRead;
+                        if ( httpMethod.equals("GET") ) {
+                            byte[] buffer = new byte[1024];
+                            int bytesRead;
 
-                        FileInputStream fin = new FileInputStream(path);
+                            FileInputStream fin = new FileInputStream(path);
 
-                        while ((bytesRead = fin.read(buffer)) != -1 ) {
-                            output.write(buffer, 0, bytesRead);
+                            while ((bytesRead = fin.read(buffer)) != -1 ) {
+                                output.write(buffer, 0, bytesRead);
+                            }
+
+                            fin.close();
                         }
-
-                        fin.close();
                     }
                 } else {
                     Status += "404 Not Found" + "\r\n";

@@ -14,7 +14,6 @@ does not parse PHP files
 
 gets configuration from an XML file passed as an argument
 
-TODO
 display a page with statistics regarding the uptime, the number of connections, the errors occured, the mean page serve time
 
 TODO
@@ -126,8 +125,13 @@ architecture
     create and start the statistics server
 
 
-## Server.java
-    listen for requests of resources or the statistics page
+## ResourcesServer.java
+    listen for requests of resources
+    spawn a worker thread for every incoming request
+
+
+## StatisticsServer.java
+    listen for requests of the statistics page
     spawn a worker thread for every incoming request
 
 
@@ -141,9 +145,12 @@ architecture
 
 ## StatisticsWorker.java
     parse requests
-    TODO
     generate and serve the statistics page
 
 
 ## Settings.java
-    store the various settings of the server; handle with accessors and mutators
+    store the settings of the server; handle with accessors and mutators
+
+
+## Statistics.java
+    store and update statistics for the server

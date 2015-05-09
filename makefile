@@ -429,19 +429,19 @@ run: $(JAVA_OBJS)
 	java Runner config.xml
 
 
-.PHONY: curl_root
-curl_root:
+.PHONY: root
+root:
 	clear
 	curl -I localhost:8000
 
 
-.PHONY: curl_404
-curl_404:
+.PHONY: 404
+404:
 	clear
-	curl -I localhost:8000/404.html
+	curl -I localhost:8000/invalid_path
 
 
-.PHONY: curl_statistics
-curl_statistics:
+.PHONY: statistics
+statistics:
 	clear
 	curl -I localhost:8001

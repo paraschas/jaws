@@ -17,7 +17,7 @@ import java.util.Date;
  * @version  0.1.0
  */
 public class Statistics {
-    final private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    final private DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private long startedAt;
     private long runningFor;
@@ -50,7 +50,7 @@ public class Statistics {
      * Get the starting time of the server.
      */
     public String getStartedAt() {
-        return dateFormat.format(new Date(startedAt));
+        return dateTimeFormat.format(new Date(startedAt));
     }
 
 
@@ -59,14 +59,13 @@ public class Statistics {
      */
     public String getRunningFor() {
         long now = System.currentTimeMillis();
-        long elapsedTime = now - startedAt;
+        runningFor = now - startedAt;
 
-        long hours = (elapsedTime / (1000 * 60 * 60)) % 24;
-        long minutes = (elapsedTime / (1000 * 60)) % 60;
-        long seconds = (elapsedTime / 1000) % 60;
-        elapsedTime = elapsedTime % 1000;
+        long hours = (runningFor / (1000 * 60 * 60)) % 24;
+        long minutes = (runningFor / (1000 * 60)) % 60;
+        long seconds = (runningFor / 1000) % 60;
 
-        return String.format("%02d:%02d:%02d:%03d", hours, minutes, seconds, elapsedTime);
+        return String.format("%d hours, %d minutes, %d seconds", hours, minutes, seconds);
     }
 
 
@@ -180,11 +179,6 @@ public class Statistics {
             averageServiceTime = 0;
         }
 
-        long hours = (averageServiceTime / (1000 * 60 * 60)) % 24;
-        long minutes = (averageServiceTime / (1000 * 60)) % 60;
-        long seconds = (averageServiceTime / 1000) % 60;
-        averageServiceTime = averageServiceTime % 1000;
-
-        return String.format("%02d:%02d:%02d:%03d", hours, minutes, seconds, averageServiceTime);
+        return Long.toString(averageServiceTime);
     }
 }
