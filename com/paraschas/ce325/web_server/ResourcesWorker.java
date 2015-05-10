@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,7 +48,11 @@ public class ResourcesWorker extends Thread {
      * Generate the directory contents HTML page.
      */
     private String generateDirectoryPage(File directory) throws Exception {
-        String currentDirectory = directory.getName();
+        Path pathAbsolute = Paths.get( directory.getPath() );
+        Path pathBase = Paths.get( settings.getDocumentRootPath() );
+        Path pathRelative = pathBase.relativize(pathAbsolute);
+
+        String currentDirectory = pathRelative.toString();
 
         StringBuilder directoryPage = new StringBuilder();
 
@@ -54,10 +60,10 @@ public class ResourcesWorker extends Thread {
         directoryPage.append("<html>\n");
         directoryPage.append("    <head>\n");
         directoryPage.append("        <meta charset=\"utf-8\">\n");
-        directoryPage.append("        <title>index of: " + currentDirectory + " - Jaws (ce325 web server)</title>\n");
+        directoryPage.append("        <title>index of " + "/" + currentDirectory + " - Jaws (ce325 web server)</title>\n");
         directoryPage.append("    </head>\n");
         directoryPage.append("    <body>\n");
-        directoryPage.append("        <h1>index of: " + currentDirectory + "</h1>\n");
+        directoryPage.append("        <h1>index of " + "/" + currentDirectory + "</h1>\n");
         directoryPage.append("        <table>\n");
 
         // table header
@@ -65,18 +71,16 @@ public class ResourcesWorker extends Thread {
         directoryPage.append("                <th>name</th>\n");
         directoryPage.append("                <th>size</th>\n");
         directoryPage.append("                <th>last modified</th>\n");
-        //directoryPage.append("                <th>mimetype</th>\n");
+        directoryPage.append("                <th>mimetype</th>\n");
         directoryPage.append("            </tr>\n");
 
         for (File file: directory.listFiles()) {
             directoryPage.append("            <tr>\n");
-            // NEXT
-            // TODO
-            // create link to the file
-            directoryPage.append("                <td>" + file.getName() + "</td>\n");
-            directoryPage.append("                <td>" + file.length() + "</td>\n");
+            // create a link to the file
+            directoryPage.append("                <td>" + "<a href=\"" + currentDirectory + "/" + file.getName() + "\">" + file.getName() + "</a>" + "</td>\n");
+            directoryPage.append("                <td align=\"right\">" + file.length() + "</td>\n");
             directoryPage.append("                <td>" + dateTimeFormat.format(file.lastModified()) + "</td>\n");
-            //directoryPage.append("                <td>" + Files.probeContentType( file.toPath() ) + "</td>\n");
+            directoryPage.append("                <td align=\"right\">" + Files.probeContentType( file.toPath() ) + "</td>\n");
             directoryPage.append("            </tr>\n");
         }
 
@@ -108,11 +112,11 @@ public class ResourcesWorker extends Thread {
 
             // DEBUG
             ////////////////////////////////////////////////////////////////////////////////////////
-            //System.out.println(inputLine);
-            //while ( input.ready() ) {
-            //    inputLine = input.readLine();
-            //    System.out.println(inputLine);
-            //}
+            System.out.println(inputLine);
+            while ( input.ready() ) {
+                inputLine = input.readLine();
+                System.out.println(inputLine);
+            }
             ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -137,19 +141,18 @@ public class ResourcesWorker extends Thread {
 
             if ( httpMethod.equals("GET") || httpMethod.equals("HEAD") ) {
                 File path = new File( URLDecoder.decode(settings.getDocumentRootPath() + queryString, "UTF-8") );
+
                 // check if the path exists
                 if ( path.exists() ) {
-                    boolean isFile = false;
+                    boolean isFile = true;
 
                     if ( path.isDirectory() ) {
                         // serve the index.html file if it exists in the directory
                         if ( new File(path, "index.html").exists() ) {
                             path = new File(path.toPath() + "/" + "index.html");
-                            isFile = true;
                         // serve the index.htm file if it exists in the directory
                         } else if ( new File(path, "index.htm").exists() ) {
                             path = new File(path.toPath() + "/" + "index.htm");
-                            isFile = true;
                         // generate and serve an html page with the contents of the directory that
                         // was requested
                         } else {
@@ -183,6 +186,8 @@ public class ResourcesWorker extends Thread {
                                 //System.out.println(directoryPage);
                                 output.writeBytes(directoryPage);
                             }
+
+                            isFile = false;
                         }
                     }
 
