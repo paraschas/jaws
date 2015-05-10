@@ -6,7 +6,7 @@
         <access filepath="logs/access.log"/>
         <error filepath="logs/error.log"/>
     </log>
-    <documentroot filepath="../html/"/>
+    <documentroot filepath="html/"/>
     <runphp>no</runphp>
     <denyaccess>
         <ip>192.168.1.121</ip>
