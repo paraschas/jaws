@@ -18,8 +18,8 @@ display a page with statistics regarding the uptime, the number of connections, 
 
 keeps an access log
 
-NEXT
 TODO
+TEST
 keeps an error log
 
 supported file types:

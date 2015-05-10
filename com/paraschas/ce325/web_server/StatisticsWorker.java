@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
 
 /**
  * Worker thread that generates and serves the statistics page.
+ * The requests for the statistics page are not counted towards the statistics of the server.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
  * @version  0.1.0

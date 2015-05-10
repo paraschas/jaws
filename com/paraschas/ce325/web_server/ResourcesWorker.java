@@ -9,6 +9,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -261,6 +263,8 @@ public class ResourcesWorker extends Thread {
                     // DEBUG
                     System.out.println(header);
                     output.writeBytes(header);
+
+                    statistics.incrementHttp404Requests();
                 }
             } else {
                 Status += "405 Method Not Allowed";
@@ -270,6 +274,8 @@ public class ResourcesWorker extends Thread {
                 // DEBUG
                 System.out.println(header);
                 output.writeBytes(header);
+
+                statistics.incrementHttp405Requests();
             }
             output.close();
 
@@ -283,6 +289,14 @@ public class ResourcesWorker extends Thread {
             statistics.incrementAllServicedRequests();
         } catch (Exception e) {
             e.printStackTrace();
+
+            StringWriter stringWriter = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(stringWriter);
+            e.printStackTrace(printWriter);
+
+            logger.addToErrorLog( stringWriter.toString() );
+
+            statistics.incrementHttp500Requests();
         }
     }
 
