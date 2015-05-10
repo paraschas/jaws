@@ -17,17 +17,19 @@ import java.net.InetSocketAddress;
  * @version  0.3.0
  */
 public class Server extends Thread {
-    Settings settings;
-    Statistics statistics;
-    String serverType;
+    private Settings settings;
+    private Statistics statistics;
+    private Logger logger;
+    private String serverType;
 
 
     /**
      * Server constructor.
      */
-    public Server(Settings settings, Statistics statistics, String serverType) {
+    public Server(Settings settings, Statistics statistics, Logger logger, String serverType) {
         this.settings = settings;
         this.statistics = statistics;
+        this.logger = logger;
         this.serverType = serverType;
     }
 
@@ -58,11 +60,11 @@ public class Server extends Thread {
                     Socket clientSocket = serverSocket.accept();
 
                     if ( serverType.equals("Resources") ) {
-                        ResourcesWorker resourcesWorker = new ResourcesWorker(clientSocket, settings, statistics);
+                        ResourcesWorker resourcesWorker = new ResourcesWorker(clientSocket, settings, statistics, logger);
                         resourcesWorker.start();
                     // serverType.equals("Statistics")
                     } else {
-                        StatisticsWorker statisticsWorker = new StatisticsWorker(clientSocket, settings, statistics);
+                        StatisticsWorker statisticsWorker = new StatisticsWorker(clientSocket, settings, statistics, logger);
                         statisticsWorker.start();
                     }
                 } catch (IOException e) {

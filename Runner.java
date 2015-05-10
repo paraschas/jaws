@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 
+import com.paraschas.ce325.web_server.Logger;
 import com.paraschas.ce325.web_server.Server;
 import com.paraschas.ce325.web_server.Settings;
 import com.paraschas.ce325.web_server.Statistics;
@@ -156,12 +157,14 @@ class Runner {
         // DEBUG
         //printSettings(settings);
 
+        Logger logger = new Logger(settings);
+
         // create and start the resources server
-        Server resourcesServer = new Server(settings, statistics, "Resources");
+        Server resourcesServer = new Server(settings, statistics, logger, "Resources");
         resourcesServer.start();
 
         // create and start the statistics server
-        Server statisticsServer = new Server(settings, statistics, "Statistics");
+        Server statisticsServer = new Server(settings, statistics, logger, "Statistics");
         statisticsServer.start();
     }
 }

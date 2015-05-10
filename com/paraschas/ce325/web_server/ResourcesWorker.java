@@ -32,15 +32,17 @@ public class ResourcesWorker extends Thread {
     private Socket clientSocket;
     private Settings settings;
     private Statistics statistics;
+    private Logger logger;
 
 
     /**
      * ResourcesWorker constructor.
      */
-    public ResourcesWorker(Socket clientSocket, Settings settings, Statistics statistics) {
+    public ResourcesWorker(Socket clientSocket, Settings settings, Statistics statistics, Logger logger) {
         this.clientSocket = clientSocket;
         this.settings = settings;
         this.statistics = statistics;
+        this.logger = logger;
     }
 
 

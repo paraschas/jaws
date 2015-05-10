@@ -30,15 +30,17 @@ public class StatisticsWorker extends Thread {
     private Socket clientSocket;
     private Settings settings;
     private Statistics statistics;
+    private Logger logger;
 
 
     /**
      * StatisticsWorker constructor.
      */
-    public StatisticsWorker(Socket clientSocket, Settings settings, Statistics statistics) {
+    public StatisticsWorker(Socket clientSocket, Settings settings, Statistics statistics, Logger logger) {
         this.clientSocket = clientSocket;
         this.settings = settings;
         this.statistics = statistics;
+        this.logger = logger;
     }
 
 

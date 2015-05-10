@@ -413,13 +413,14 @@ com.paraschas.ce325.web_server : $(call PACKAGE_OBJS,com.paraschas.ce325.web_ser
 open:
 	vim -p \
 		Runner.java \
+		com/paraschas/ce325/web_server/Logger.java \
 		com/paraschas/ce325/web_server/Server.java \
 		com/paraschas/ce325/web_server/ResourcesWorker.java \
 		com/paraschas/ce325/web_server/StatisticsWorker.java \
-		com/paraschas/ce325/web_server/Statistics.java \
 		README.md \
 		makefile
 		#com/paraschas/ce325/web_server/Settings.java \
+		#com/paraschas/ce325/web_server/Statistics.java \
 		#config.xml \
 
 
