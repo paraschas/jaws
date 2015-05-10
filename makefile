@@ -387,6 +387,7 @@ clean::
 	$(XARGS) $(RM)
 	$(FIND) . -name '*.u' -print | $(XARGS) $(RM)
 	rm -rf $(DOC_DIR)
+	rm -rf logs
 
 ifneq ($(strip $(XJAVA_SRC)),)
 clean::
