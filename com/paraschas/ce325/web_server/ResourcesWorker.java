@@ -76,8 +76,15 @@ public class ResourcesWorker extends Thread {
 
         for (File file: directory.listFiles()) {
             directoryPage.append("            <tr>\n");
-            // create a link to the file
-            directoryPage.append("                <td>" + "<a href=\"" + currentDirectory + "/" + file.getName() + "\">" + file.getName() + "</a>" + "</td>\n");
+
+            String queryString;
+            if ( currentDirectory.equals("") || currentDirectory.equals("/") ) {
+                queryString = currentDirectory + "/" + file.getName();
+            } else {
+                queryString = (currentDirectory.startsWith("/") ? currentDirectory : "/" + currentDirectory) + "/" + file.getName();
+            }
+            directoryPage.append("                <td>" + "<a href=\"" + queryString + "\">" + file.getName() + "</a>" + "</td>\n");
+
             directoryPage.append("                <td align=\"right\">" + file.length() + "</td>\n");
             directoryPage.append("                <td>" + dateTimeFormat.format(file.lastModified()) + "</td>\n");
             directoryPage.append("                <td align=\"right\">" + Files.probeContentType( file.toPath() ) + "</td>\n");
