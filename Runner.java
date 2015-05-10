@@ -137,8 +137,6 @@ class Runner {
         String configurationFilePath;
         String ipAddress = "localhost";
         String resourcesDirectoryPath = ".";
-        Settings settings = new Settings();
-        Statistics statistics = new Statistics();
 
         if (args.length == 0) {
             System.out.println("usage:");
@@ -150,6 +148,8 @@ class Runner {
         // log info
         //System.out.println("configurationFilePath: " + configurationFilePath);
 
+        Settings settings = new Settings();
+
         settings.setIpAddress(ipAddress);
         settings.setResourcesDirectoryPath(resourcesDirectoryPath);
         parseConfigurationFile(settings, configurationFilePath);
@@ -157,6 +157,7 @@ class Runner {
         // DEBUG
         //printSettings(settings);
 
+        Statistics statistics = new Statistics();
         Logger logger = new Logger(settings);
 
         // create and start the resources server
