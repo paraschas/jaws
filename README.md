@@ -16,14 +16,17 @@ gets configuration from an XML file passed as an argument
 
 display a page with statistics regarding the uptime, the number of connections, the errors occured, the mean page serve time
 
+keeps an access log
+
+NEXT
 TODO
-keeps a log of the connections and the errors
+keeps an error log
 
 supported file types:
 text files, jpg, png, tiff, bmp, avi, mpg4, mp3, ogg, pdf, ms-word, ms-excel, ms-ppt
 
 on a directory resource request, serve index.htm or index.html if one exists;
-TODO
+
 else return an HTML page with the contents of the directory as links, including a link to the parent directory, if one exists (see document root)
 
 
@@ -134,8 +137,6 @@ architecture
     parse requests
     serve files, set Content-Length, Content-Type (mimetype)
     generate and serve an html page with the contents of the directory that was requested
-        NEXT
-        TODO
         create links for each file in the directory
 
 

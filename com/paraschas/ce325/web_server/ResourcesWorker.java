@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 
@@ -24,7 +25,7 @@ import java.util.StringTokenizer;
  * Worker thread that services resources requests.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.4
+ * @version  0.1.0
  */
 public class ResourcesWorker extends Thread {
     final private DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -112,22 +113,42 @@ public class ResourcesWorker extends Thread {
         ) {
             long startServicingRequest = System.currentTimeMillis();
 
+            String Request;
+
             String inputLine;
             inputLine = input.readLine();
+
+            Request = inputLine;
 
             StringTokenizer tokenizer = new StringTokenizer(inputLine);
             String httpMethod = tokenizer.nextToken();
             String queryString = tokenizer.nextToken();
 
             // DEBUG
-            ////////////////////////////////////////////////////////////////////////////////////////
             System.out.println(inputLine);
+
+            // get the User-Agent
+            String UserAgent = "";
             while ( input.ready() ) {
                 inputLine = input.readLine();
-                System.out.println(inputLine);
-            }
-            ////////////////////////////////////////////////////////////////////////////////////////
 
+                // DEBUG
+                System.out.println(inputLine);
+
+                int index = inputLine.indexOf(' ');
+                if ( index > 0 && inputLine.substring(0, index).equals("User-Agent:") ) {
+                    UserAgent = inputLine.substring(index + 1);
+                }
+            }
+
+            StringBuilder logEntry = new StringBuilder();
+            //logEntry.append( clientSocket.getInetAddress().toString().substring(1) );
+            logEntry.append( clientSocket.getRemoteSocketAddress().toString().substring(1) );
+            logEntry.append(" - ");
+            logEntry.append("[" + dateTimeFormat.format(new Date(startServicingRequest)) + "]");
+            logEntry.append(" - " );
+            logEntry.append("\"" + Request + "\"");
+            logEntry.append(" -> ");
 
             // response
             ////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +162,7 @@ public class ResourcesWorker extends Thread {
             String ContentLength;
             String ContentType;
 
-            Status = "HTTP/1.1 ";
+            Status = "";
             LastModified = "";
             ContentLength = "";
             ContentType = "";
@@ -174,7 +195,7 @@ public class ResourcesWorker extends Thread {
                             }
 
                             // set the Status Code
-                            Status += "200 OK" + "\r\n";
+                            Status += "200 OK";
 
                             LastModified = "Last-Modified: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + "\r\n";
 
@@ -184,7 +205,7 @@ public class ResourcesWorker extends Thread {
                             // set the mimetype of the file
                             ContentType = "Content-Type: " + "text/html" + "\r\n";
 
-                            String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+                            String header = "HTTP/1.1 " + Status + "\r\n" + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
 
                             // DEBUG
                             System.out.println(header);
@@ -203,7 +224,7 @@ public class ResourcesWorker extends Thread {
                     // if the path is a file, serve the file.
                     if (isFile) {
                         // set the Status Code
-                        Status += "200 OK" + "\r\n";
+                        Status += "200 OK";
 
                         LastModified = "Last-Modified: " + dateTimeFormat.format(path.lastModified()) + "\r\n";
 
@@ -213,7 +234,7 @@ public class ResourcesWorker extends Thread {
                         ContentType = "Content-Type: " +
                                 Files.probeContentType( path.toPath() ) + "\r\n";
 
-                        String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+                        String header = "HTTP/1.1 " + Status + "\r\n" + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
 
                         // DEBUG
                         System.out.println(header);
@@ -233,24 +254,29 @@ public class ResourcesWorker extends Thread {
                         }
                     }
                 } else {
-                    Status += "404 Not Found" + "\r\n";
+                    Status += "404 Not Found";
 
-                    String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+                    String header = "HTTP/1.1 " + Status + "\r\n" + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
 
                     // DEBUG
                     System.out.println(header);
                     output.writeBytes(header);
                 }
             } else {
-                Status += "405 Method Not Allowed" + "\r\n";
+                Status += "405 Method Not Allowed";
 
-                String header = Status + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
+                String header = "HTTP/1.1 " + Status + "\r\n" + Date + Server + LastModified + Connection + ContentLength + ContentType + "\r\n";
 
                 // DEBUG
                 System.out.println(header);
                 output.writeBytes(header);
             }
             output.close();
+
+            logEntry.append(Status);
+            logEntry.append(" - ");
+            logEntry.append("\"" + UserAgent + "\"");
+            logger.addToAccessLog( logEntry.toString() );
 
             long now = System.currentTimeMillis();
             statistics.addTotalServiceTime(now - startServicingRequest);
@@ -264,8 +290,8 @@ public class ResourcesWorker extends Thread {
     public void run() {
         // DEBUG
         System.out.println();
-        System.out.println("new connection: " + clientSocket.getInetAddress() +
-                    ":" + clientSocket.getPort());
+        System.out.println("new connection: " + clientSocket.getInetAddress().toString().substring(1) + ":" +
+                clientSocket.getPort());
 
         try {
             serviceRequest();

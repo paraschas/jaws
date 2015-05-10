@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
  * Worker thread that generates and serves the statistics page.
  *
  * @author   Dimitrios Paraschas <paraschas@gmail.com>
- * @version  0.0.2
+ * @version  0.1.0
  */
 public class StatisticsWorker extends Thread {
     final private DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -161,14 +161,13 @@ public class StatisticsWorker extends Thread {
             String queryString = tokenizer.nextToken();
 
             // DEBUG
-            ////////////////////////////////////////////////////////////////////////////////////////
-            //System.out.println(inputLine);
-            //while ( input.ready() ) {
-            //    inputLine = input.readLine();
-            //    System.out.println(inputLine);
-            //}
-            ////////////////////////////////////////////////////////////////////////////////////////
+            System.out.println(inputLine);
+            while ( input.ready() ) {
+                inputLine = input.readLine();
 
+                // DEBUG
+                System.out.println(inputLine);
+            }
 
             // response
             ////////////////////////////////////////////////////////////////////////////////////////
@@ -281,8 +280,8 @@ public class StatisticsWorker extends Thread {
     public void run() {
         // DEBUG
         System.out.println();
-        System.out.println("new connection: " + clientSocket.getInetAddress() +
-                    ":" + clientSocket.getPort());
+        System.out.println("new connection: " + clientSocket.getInetAddress() + ":" +
+                clientSocket.getPort());
 
         try {
             serviceRequest();
