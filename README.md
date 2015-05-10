@@ -151,3 +151,8 @@ architecture
 
 ## Statistics.java
     store and update statistics for the server
+
+
+TODO
+===
+save and replace "\r\n" with a variable
