@@ -1,4 +1,4 @@
-Jaws -- A simple Java web server.
+Jaws -- a simple Java web server
 ===
 
 ## description
